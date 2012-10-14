@@ -21,8 +21,8 @@ typedef struct
 
 typedef struct 
 {
-	struct TCB_queue_node* front;
-	struct TCB_queue_node* rear;
+	TCB_queue_node* front;
+	TCB_queue_node* rear;
 } TCB_queue;
 
 //
@@ -30,6 +30,11 @@ typedef struct
 TCB_list Create_thread_queue()
 {
 	return NULL;
+}
+
+int Is_empty(TCB_queue* q)
+{
+	return (q == NULL);
 }
 
 int Enqueue(TCB_queue* q, TCB* t)
@@ -63,5 +68,90 @@ int Enqueue(TCB_queue* q, TCB* t)
 
 int Dequeue(TCB_queue* q)
 {
-	queue
+	if(Is_empty(q))
+	{
+		printf("\n * Queue already empty. Not dequeued * \n");
+		return 0;
+	}
+	else if(q.front == q.rear) // queue has only one element
+	{
+		TCB_queue_node* element = q->rear;
+
+		free(element);
+
+		q->front = NULL;
+		q->rear = NULL;
+
+		return 1;
+	}
+	else
+	{
+		TCB_queue_node* element = q->rear;
+		
+		free(element);
+
+		q->rear = NULL;
+
+		return 1;
+	}
+}
+
+int Print(TCB_queue_node* n)
+{
+	if(n == NULL)
+	{
+		printf("\n * Node was empty. Not printed * \n");
+
+		return 0;
+	}
+	else
+	{
+		TCB* t = n->data;
+
+		if(t == NULL) 
+		{
+			printf("\n * Node had no data associated with it. Not printed * \n");
+			
+			return 0;
+		}
+		else
+		{
+			int* tid = t->tid;
+
+			if(tid == NULL)
+			{
+				printf("\n * Node TCB had no tid associated with it. Not printed * \n");
+
+				return 0;
+			}
+			else
+			{
+				printf("%d",*tid);
+				
+				return 1;
+			}
+		}
+
+	}
+}
+
+int Print(TCB_queue* q)
+{
+	TCB_queue_node* pointer = q->front;
+
+	while(pointer != NULL)
+	{
+		int tid = (pointer->data)->tid;
+
+		int print_ok = Print(pointer);
+
+		if(!print_ok) return 0;
+
+		if(pointer->next != NULL)
+		{
+			printf(",");
+		}
+	}
+
+	return 1;
 }
