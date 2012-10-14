@@ -1,23 +1,28 @@
+#include <ucontext.h>
+#include <stdlib.h>
+#include <stdio.h>
 
-enum State
+typedef enum
 {
 	ready,
 	running,
 	blocked
-}
+} State;
 
 typedef struct
 {
-	int* tid;
+	int tid;
 	ucontext_t* context;
-	State* state;
+	State state;
 } TCB;
 
-typedef struct
+struct TCB_queue_node_struct
 {
 	TCB* data;
-	TCB_queue_node* next;
-} TCB_queue_node;
+	struct TCB_queue_node_struct* next;
+};
+
+typedef struct TCB_queue_node_struct TCB_queue_node;
 
 typedef struct 
 {
@@ -27,7 +32,29 @@ typedef struct
 
 //
 
-TCB_list Create_thread_queue()
+TCB* Create_TCB(int tid, /*ucontext_t* context,*/ State state)
+{
+	TCB* t = (TCB*)malloc(sizeof(TCB));
+
+	t->tid = tid;
+	t->state = state;
+
+	return t;
+}
+
+TCB_queue_node* Create_TCB_queue_node(int tid, /*ucontext_t* context,*/ State state)
+{
+	TCB* t = Create_TCB(tid, /*context,*/ state);
+
+	TCB_queue_node* n = (TCB_queue_node*)malloc(sizeof(TCB_queue_node));
+
+	n->data = t;
+	n->next = NULL;
+
+	return n;
+}
+
+TCB_queue* Create_TCB_queue()
 {
 	return NULL;
 }
@@ -39,7 +66,7 @@ int Is_empty(TCB_queue* q)
 
 int Enqueue(TCB_queue* q, TCB* t)
 {
-	TCB_queue_node* new_element = (TCB_queue_node)malloc(sizeof(TCB_queue_node));
+	TCB_queue_node* new_element = (TCB_queue_node*)malloc(sizeof(TCB_queue_node));
 
 	if(new_element == NULL)
 	{
@@ -73,9 +100,9 @@ int Dequeue(TCB_queue* q)
 		printf("\n * Queue already empty. Not dequeued * \n");
 		return 0;
 	}
-	else if(q.front == q.rear) // queue has only one element
+	else if(&(q->front) == &(q->rear)) // queue has only one element
 	{
-		TCB_queue_node* element = q->rear;
+		TCB_queue_node* element = q->front;
 
 		free(element);
 
@@ -86,17 +113,17 @@ int Dequeue(TCB_queue* q)
 	}
 	else
 	{
-		TCB_queue_node* element = q->rear;
-		
-		free(element);
+		TCB_queue_node* element = q->front;
 
-		q->rear = NULL;
+		q->front = (q->front)->next;
+
+		free(element);
 
 		return 1;
 	}
 }
 
-int Print(TCB_queue_node* n)
+int Print_TCB_queue_node(TCB_queue_node* n)
 {
 	if(n == NULL)
 	{
@@ -116,26 +143,17 @@ int Print(TCB_queue_node* n)
 		}
 		else
 		{
-			int* tid = t->tid;
+			int tid = t->tid;
 
-			if(tid == NULL)
-			{
-				printf("\n * Node TCB had no tid associated with it. Not printed * \n");
+			printf("%d",tid);
 
-				return 0;
-			}
-			else
-			{
-				printf("%d",*tid);
-				
-				return 1;
-			}
+			return 1;
 		}
 
 	}
 }
 
-int Print(TCB_queue* q)
+int Print_TCB_queue(TCB_queue* q)
 {
 	TCB_queue_node* pointer = q->front;
 
@@ -143,7 +161,7 @@ int Print(TCB_queue* q)
 	{
 		int tid = (pointer->data)->tid;
 
-		int print_ok = Print(pointer);
+		int print_ok = Print_TCB_queue_node(pointer);
 
 		if(!print_ok) return 0;
 
@@ -154,4 +172,16 @@ int Print(TCB_queue* q)
 	}
 
 	return 1;
+}
+
+int main(int argc, char *argv[])
+{
+	TCB_queue* q = Create_TCB_queue();
+
+	TCB* t1 = Create_TCB(1,ready);
+
+	//Enqueue(q,t1);
+
+	//Print_TCB_queue(q);
+	
 }
