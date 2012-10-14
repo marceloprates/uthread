@@ -5,24 +5,43 @@
 
 #include "TCB.h"
 
-//
-
 TCB* Create_TCB(int tid, ucontext_t* context, State state)
 {
 	TCB* t = (TCB*)malloc(sizeof(TCB));
 
-	t->tid = tid;
-	t->state = state;
-	t->waiting_for_me = Create_TCB_queue();
+	if(t == NULL)
+	{
+		printf("\n* Thread not created. No memory avaliable *\n");
 
-	return t;
+		return NULL;
+	}
+	else
+	{
+		t->tid = tid;
+		t->state = state;
+		t->waiting_for_me = Create_TCB_queue();
+
+		return t;
+	}
 }
 
-void Update_TCB(TCB* t, ucontext_t* context, State state, TCB_queue* waiting_for_me)
+int Update_TCB(TCB* t, ucontext_t* context, State state, TCB_queue* waiting_for_me)
 {
-	t->context = context;
-	t->state = state;
-	t->waiting_for_me = waiting_for_me;
+
+	if(t == NULL)
+	{
+		printf("\n * Thread not updated. Thread was empty * \n");
+
+		return 0;
+	}
+	else
+	{
+		t->context = context;
+		t->state = state;
+		t->waiting_for_me = waiting_for_me;
+		
+		return 1;
+	}
 }
 
 TCB_queue_node* Create_TCB_queue_node(int tid, ucontext_t* context, State state)
@@ -31,18 +50,34 @@ TCB_queue_node* Create_TCB_queue_node(int tid, ucontext_t* context, State state)
 
 	TCB_queue_node* n = (TCB_queue_node*)malloc(sizeof(TCB_queue_node));
 
-	n->data = t;
-	n->next = NULL;
-
-	return n;
+	if(t != NULL && n != NULL)
+	{
+		n->data = t;
+		n->next = NULL;
+		return n;
+	}
+	else
+	{
+		return NULL;
+	}
 }
 
 TCB_queue* Create_TCB_queue()
 {
 	TCB_queue* new_queue = (TCB_queue*)malloc(sizeof(TCB_queue));
 
-	new_queue->front = NULL;
-	new_queue->rear = NULL;
+	if(new_queue == NULL)
+	{
+		printf("\n * Queue not created. No memory avaliable * \n");
+	
+		return NULL;
+	}
+	else
+	{
+		new_queue->front = NULL;
+		new_queue->rear = NULL;
+		return new_queue;
+	}
 }
 
 int Is_empty(TCB_queue* q)
@@ -220,10 +255,10 @@ int main(int argc, char *argv[])
 	TCB* t2 = Create_TCB(2,NULL,ready);
 	TCB* t3 = Create_TCB(3,NULL,ready);
 
-	Enqueue(q,t1); Print_TCB_queue(q); printf("\n");
-	Enqueue(q,t2); Print_TCB_queue(q); printf("\n");
-	Enqueue(q,t3); Print_TCB_queue(q); printf("\n");
-	t3 = Dequeue(q); Print_TCB_queue(q); printf("\n");
-	Enqueue(q,t3); Print_TCB_queue(q); printf("\n");
+	printf("\nEnqueuing ...\n"); Enqueue(q,t1); Print_TCB_queue(q); printf("\n");
+	printf("\nEnqueuing ...\n"); Enqueue(q,t2); Print_TCB_queue(q); printf("\n");
+	printf("\nEnqueuing ...\n"); Enqueue(q,t3); Print_TCB_queue(q); printf("\n");
+	printf("\nDenqueuing ...\n"); t3 = Dequeue(q); Print_TCB_queue(q); printf("\n");
+	printf("\nEnqueuing ...\n"); Enqueue(q,t3); Print_TCB_queue(q); printf("\n");
 	
 }
