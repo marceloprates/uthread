@@ -1,15 +1,25 @@
 #include "TCB.h"
 
-TCB* Reschedule(TCB_queue* ready, TCB* thread)
-{
-	Enqueue(states->ready, thread);
+TCB_queue* ready;
 
-	return Dequeue(states->ready);
+void Init_scheduler()
+{
+	ready = Create_TCB_queue();
 }
 
-TCB* Block(TCB_queue* ready, TCB* thread, TCB* waited_for)
+void Ready(TCB* thread)
+{
+	Enqueue(ready, thread);
+}
+
+TCB* Schedule()
+{
+	return Dequeue(ready);
+}
+
+TCB* Block(TCB* thread, TCB* waited_for)
 {
 	Enqueue(waited_for->waiting, thread);
 
-	return Dequeue(states->ready);
+	return Dequeue(ready);
 }
