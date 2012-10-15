@@ -1,5 +1,18 @@
 #include "TCB.h"
 
+ucontext_t* Make_context(void (*start_routine) (void*), void* arg)
+{
+	ucontext_t* context;
+	
+	getcontext(context);
+	context.uc_stack.ss_sp = ??;
+	context.uc_stack.ss_size = ??;
+	context.uc_link = ??;
+	makecontext(context, start_routine, 1, arg);
+
+	return context;
+}
+
 void Dispatch(TCB* thread)
 {
 	setcontext(thread->context);
@@ -7,14 +20,7 @@ void Dispatch(TCB* thread)
 
 int Yield(TCB* thread)
 {
-	ucontext_t* ucp;
-
-	int success = getcontext(ucp);
-
-	if(success == 0)
-	{
-		thread->context = ucp;
-	}
+	int success = getcontext(thread->context);
 
 	return success;
 }
