@@ -10,30 +10,35 @@ typedef enum
 	blocked
 } State;
 
-typedef struct
+struct TCB_struct
 {
 	int tid;
 	ucontext_t* context;
 	State state;
-	struct TCB_queue* waiting_for_me;
-} TCB;
+	struct TCB_queue_struct* waiting_for_me;
+};
 
 struct TCB_queue_node_struct
 {
-	TCB* data;
+	struct TCB_struct* data;
 	struct TCB_queue_node_struct* next;
 };
 
+struct TCB_queue_struct
+{
+	struct TCB_queue_node_struct* front;
+	struct TCB_queue_node_struct* rear;
+};
+
+typedef struct TCB_struct TCB;
+
 typedef struct TCB_queue_node_struct TCB_queue_node;
 
-typedef struct 
-{
-	TCB_queue_node* front;
-	TCB_queue_node* rear;
-} TCB_queue;
+typedef struct TCB_queue_struct TCB_queue;
 
 TCB* 		Create_TCB(int tid, ucontext_t* context, State state);
 int 		Update_TCB(TCB* t, ucontext_t* context, State state, TCB_queue* waiting_for_me);
+int 		Block(TCB* blocking_thread, TCB* waiting_thread);
 TCB_queue_node* Create_TCB_queue_node(int tid, ucontext_t* context, State state);
 TCB_queue* 	Create_TCB_queue();
 int 		Is_empty(TCB_queue* q);
