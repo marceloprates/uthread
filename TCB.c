@@ -125,14 +125,16 @@ int Enqueue(TCB_queue *q, TCB *t)
 		if(Is_empty(q))
 		{
 			q->front = new_element;
+			q->rear = new_element;
 		}
 		else
 		{
-			q->rear->next = (TCB_queue_node*)malloc(sizeof(TCB_queue_node));
-			q->rear->next = new_element;
+			(q->rear)->next = (TCB_queue_node*)malloc(sizeof(TCB_queue_node));
+			(q->rear)->next = new_element;
+			q->rear = (q->rear)->next;
 		}
 
-		q->rear = new_element;
+		
 
 		return 1;
 	}
@@ -148,17 +150,11 @@ TCB* Dequeue(TCB_queue* q)
 	else if(&(q->front) == &(q->rear)) // queue has only one element
 	{
 		TCB_queue_node* element = q->front;
-
-		TCB* copy = (TCB*)malloc(sizeof(TCB));
 		
-		memcpy(copy,element->data,sizeof(element));
-
-		free(element);
-
 		q->front = NULL;
 		q->rear = NULL;
 
-		return copy;
+		return element->data;
 	}
 	else
 	{
@@ -166,13 +162,7 @@ TCB* Dequeue(TCB_queue* q)
 
 		q->front = (q->front)->next;
 
-		TCB* copy = (TCB*)malloc(sizeof(TCB));
-
-		memcpy(copy,element->data,sizeof(element));
-
-		free(element);
-
-		return copy;
+		return element->data;
 	}
 }
 
@@ -282,13 +272,14 @@ int main(int argc, char *argv[])
 	TCB* t1 = Create_TCB(1,NULL,ready);
 	TCB* t2 = Create_TCB(2,NULL,ready);
 	TCB* t3 = Create_TCB(3,NULL,ready);
+	TCB* t4 = Create_TCB(4,NULL,ready);
 
 	printf("\nEnqueuing ...\n"); Enqueue(q,t1); Print_TCB_queue(q); printf("\n");
-	printf("\nBlocking thread %d with thread %d...\n",t1->tid,t2->tid); Block(t1,t2); Print_TCB_queue(q); printf("\n");
 	printf("\nEnqueuing ...\n"); Enqueue(q,t2); Print_TCB_queue(q); printf("\n");
+	printf("\nBlocking thread %d with thread %d...\n",t1->tid,t2->tid); Block(t1,t2); Print_TCB_queue(q); printf("\n");
 	printf("\nEnqueuing ...\n"); Enqueue(q,t3); Print_TCB_queue(q); printf("\n");
 	printf("\nBlocking thread %d with thread %d...\n",t1->tid,t3->tid); Block(t1,t3); Print_TCB_queue(q); printf("\n");
-	printf("\nDenqueuing ...\n"); t3 = Dequeue(q); Print_TCB_queue(q); printf("\n");
-	printf("\nEnqueuing ...\n"); Enqueue(q,t3); Print_TCB_queue(q); printf("\n");
+	printf("\nDenqueuing ...\n"); t4 = Dequeue(q); Print_TCB_queue(q); printf("\n");
+	printf("\nEnqueuing ...\n"); Enqueue(q,t4); Print_TCB_queue(q); printf("\n");
 	
 }
