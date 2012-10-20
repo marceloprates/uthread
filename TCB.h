@@ -6,7 +6,11 @@
 #include <string.h>
 
 #include "TCB_list.h"
-#include "TCB_queue.h"
+//#include "TCB_queue.h"
+
+// forward declaration BEGIN
+	typedef struct TCB_list_struct TCB_list;
+// forward declaration END
 
 typedef enum
 {

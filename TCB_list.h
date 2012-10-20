@@ -7,6 +7,8 @@
 
 #include "TCB.h"
 
+typedef struct TCB_struct TCB;
+
 struct TCB_list_node_struct
 {
 	struct TCB_struct* data;

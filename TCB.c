@@ -19,7 +19,7 @@ TCB* Create_TCB(int tid, ucontext_t* context, State state)
 	{
 		t->tid = tid;
 		t->state = state;
-		t->waiting_for_me = Create_TCB_list();
+		t->waiting_for_me = TCB_list_create();
 
 		return t;
 	}
@@ -126,33 +126,15 @@ char* TCB_to_string(TCB* tcb)
 		int tid = tcb->tid;
 		State state = tcb->state;
 		TCB_list* waiting_for_me = tcb->waiting_for_me;
-		
-		char* format = "Thread: %d, State: %s\n";
 
-		char* TCB_string = malloc(snprintf(NULL, 0, format, tid, State_to_string(state)) + 1);
-		sprintf(TCB_string, format, tid, State_to_string(state));
+		char* waiting_for_me_string = TCB_list_enumerate_tids(waiting_for_me);
+		
+		char* format = "Thread: %d, State: %s, Waiting for me: %s\n";
+
+		// memory allocation and string concatenation
+		char* TCB_string = malloc(snprintf(NULL, 0, format, tid, State_to_string(state), waiting_for_me_string) + 1);
+		sprintf(TCB_string, format, tid, State_to_string(state), waiting_for_me_string);
 		
 		return TCB_string;
 	}
 }
-
-/*int main(int argc, char *argv[])
-{
-	
-	TCB_queue* q = Create_TCB_queue();
-
-	TCB* t1 = Create_TCB(1,NULL,ready);
-	TCB* t2 = Create_TCB(2,NULL,ready);
-	TCB* t3 = Create_TCB(3,NULL,ready);
-	TCB* t4 = Create_TCB(4,NULL,ready);
-
-	
-	printf("\nEnqueuing thread %d...\n",t1->tid); Enqueue(q,t1); Print_TCB_queue(q); printf("\n");
-	printf("\nEnqueuing thread %d...\n",t2->tid); Enqueue(q,t2); Print_TCB_queue(q); printf("\n");
-	printf("\nBlocking thread %d with thread %d...\n",t1->tid,t2->tid); Block(t1,t2); Print_TCB_queue(q); printf("\n");
-	printf("\nEnqueuing thread %d...\n", t3->tid); Enqueue(q,t3); Print_TCB_queue(q); printf("\n");
-	printf("\nBlocking thread %d with thread %d...\n",t1->tid,t3->tid); Block(t1,t3); Print_TCB_queue(q); printf("\n");
-	printf("\nDenqueuing and saving content into TCB variable 't4'...\n"); t4 = Dequeue(q); Print_TCB_queue(q); printf("\n");
-	printf("\nEnqueuing TCB variable 't4' A.K.A. thread %d...\n",t4->tid); Enqueue(q,t4); Print_TCB_queue(q); printf("\n");
-	printf("\nHugging Joel Carbonera...\n");
-}*/
