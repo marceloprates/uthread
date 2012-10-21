@@ -73,7 +73,16 @@ TCB* TCB_list_remove(TCB_list* tcb_list, TCB* tcb)
 
 			if(pointer->previous == NULL) // first element is to be removed
 			{
-				tcb_list->front = (tcb_list->front)->next;
+				if((tcb_list->front)->next == NULL) // list has only one element
+				{
+					tcb_list->front = NULL;
+					tcb_list->rear = NULL;
+				}
+				else
+				{	
+					tcb_list->front = (tcb_list->front)->next;
+					(tcb_list->front)->previous = NULL;
+				}
 
 				return to_be_removed->data;
 			}
