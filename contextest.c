@@ -2,11 +2,22 @@
 #include "dispatcher.h"
 #include "contexts.h"
 
+void dispatch_next_thread()
+{
+	TCB* thread = Schedule();
+
+	if(thread != NULL)
+	{
+		Dispatch(thread);
+	}
+
+	printf("--It is done.--\n");
+}
+
 void change_current_thread()
 {
 	Ready(Running());
-	TCB* thread = Schedule();
-	Dispatch(thread);
+	dispatch_next_thread();
 }
 
 void yield()
@@ -26,7 +37,7 @@ void proc1(void* n)
 {
 	int i = ((int*)n)[0];
 
-	printf("Hello from proc1\n");
+	printf("--Hello from proc1--\n");
 
 	for(; i > 0; i--)
 	{
@@ -43,7 +54,7 @@ void proc2(void* n)
 {
 	int i = ((int*)n)[0];
 
-	printf("Hello from proc2\n");
+	printf("--Hello from proc2--\n");
 
 	for(; i > 0; i--)
 	{
@@ -65,7 +76,7 @@ int main()
 
 	Init_scheduler();
 
-	uclink = Make_context_noargs(change_current_thread, NULL);
+	uclink = Make_context_noargs(dispatch_next_thread, NULL);
 
 	context1 = Make_context(proc1, (void*)n, uclink);
 	context2 = Make_context(proc2, (void*)n, uclink);
@@ -73,5 +84,5 @@ int main()
 	Create(context1);
 	Create(context2);
 
-	setcontext(uclink);
+	dispatch_next_thread();
 }

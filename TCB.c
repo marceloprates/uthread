@@ -18,6 +18,7 @@ TCB* Create_TCB(int tid, ucontext_t* context, State state)
 	else
 	{
 		t->tid = tid;
+		t->context = context;
 		t->state = state;
 		t->waiting_for_me = TCB_list_create();
 

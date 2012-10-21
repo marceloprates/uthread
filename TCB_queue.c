@@ -68,7 +68,7 @@ TCB* Dequeue(TCB_queue* tcb_queue)
 		printf("\n * Queue already empty. Not dequeued * \n");
 		return NULL;
 	}
-	else if(&(tcb_queue->front) == &(tcb_queue->rear)) // queue has only one element
+	else if((tcb_queue->front) == (tcb_queue->rear)) // queue has only one element
 	{
 		TCB_queue_node* element = tcb_queue->front;
 		
@@ -132,7 +132,7 @@ int Print_TCB_queue(TCB_queue* tcb_queue)
 		return 1;
 	}
 }
-
+/*
 int main(int argc, char *argv[])
 {
 	TCB_queue* q = TCB_queue_create();
@@ -151,3 +151,4 @@ int main(int argc, char *argv[])
 	printf("\nEnqueuing TCB variable 't4' A.K.A. thread %d...\n",t4->tid); Enqueue(q,t4); Print_TCB_queue(q); printf("\n");
 	printf("\nHugging Joel Carbonera...\n");
 }
+*/

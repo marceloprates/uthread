@@ -6,17 +6,13 @@ int tid;
 
 void Init_scheduler()
 {
-	ready_threads = Create_TCB_queue();
+	ready_threads = TCB_queue_create();
 	tid = 0;
 }
 
 int Create(ucontext_t* starting_context)
 {
-	TCB* thread = (TCB*)malloc(sizeof(TCB));
-
-	thread->tid = tid++;
-	thread->context = starting_context;
-	thread->waiting_for_me = Create_TCB_queue();
+	TCB* thread = Create_TCB(tid++, starting_context, ready);
 
 	return Ready(thread);
 }
