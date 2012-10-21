@@ -1,3 +1,7 @@
+#pragma once
+#ifndef TCB_H
+#define TCB_H
+
 #include <ucontext.h>
 #include <stdlib.h>
 #include <stdio.h>
@@ -48,3 +52,5 @@ char* 		State_to_string(State state);
 int 		Print_TCB_queue_node(TCB_queue_node* n);
 int 		Print_TCB_queue(TCB_queue* q);
 char* 		List_tids(TCB_queue* q);
+
+#endif /*TCB_H*/

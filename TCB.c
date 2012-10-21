@@ -264,7 +264,7 @@ char* List_tids(TCB_queue* q)
 
 	return tids_string;
 }
-
+/*
 int main(int argc, char *argv[])
 {
 	TCB_queue* q = Create_TCB_queue();
@@ -283,3 +283,4 @@ int main(int argc, char *argv[])
 	printf("\nEnqueuing ...\n"); Enqueue(q,t4); Print_TCB_queue(q); printf("\n");
 	
 }
+*/
