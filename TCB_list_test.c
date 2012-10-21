@@ -17,8 +17,10 @@ int main(int argc, char *argv[])
 	printf("\nBlocking thread %d with thread %d...\n",t1->tid,t2->tid); Block(t1,t2); Print_TCB_list(l); printf("\n");
 	printf("\nAdding thread %d to list...\n", t3->tid); TCB_list_add(l,t3); Print_TCB_list(l); printf("\n");
 	printf("\nBlocking thread %d with thread %d...\n",t1->tid,t3->tid); Block(t1,t3); Print_TCB_list(l); printf("\n");
-	printf("\nRemoving and saving content into TCB variable 't4'...\n"); t4 = TCB_list_remove(l,t1); Print_TCB_list(l); printf("\n");
+	printf("\nRemoving thread %d and saving content into TCB variable 't4'...\n", t1->tid); t4 = TCB_list_remove(l,t1); Print_TCB_list(l); printf("\n");
 	printf("\nAdding TCB variable 't4' A.K.A. thread %d to list...\n",t4->tid); TCB_list_add(l,t4); Print_TCB_list(l); printf("\n");
+	printf("\nUnblocking thread %d with thread %d...\n",t1->tid,t2->tid); Unblock(t1,t2); Print_TCB_list(l); printf("\n");
+	printf("\nUnblocking thread %d with thread %d...\n",t1->tid,t3->tid); Unblock(t1,t3); Print_TCB_list(l); printf("\n");
 	printf("\nHugging Joel Carbonera...\n");
 }
 
