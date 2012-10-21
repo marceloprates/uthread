@@ -1,4 +1,6 @@
 #pragma once
+#ifndef TCB_H
+#define TCB_H
 
 #include <ucontext.h>
 #include <stdlib.h>
@@ -36,3 +38,5 @@ int 	Block(TCB* blocking_thread, TCB* waiting_thread);
 int 	Unblock(TCB* blocking_thread, TCB* waiting_thread);
 char* 	State_to_string(State state);
 char* 	TCB_to_string(TCB* tcb);
+
+#endif /*TCB_H*/
