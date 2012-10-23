@@ -34,11 +34,13 @@ TCB* Running()
 {
 	return running_thread;
 }
-/*
-TCB* Block(TCB* thread, TCB* waited_for)
-{
-	Enqueue(waited_for->waiting, thread);
 
-	return Dequeue(ready);
+void Block(TCB* thread, TCB* waited_for)
+{
+	Block_TCB(waited_for, thread);
 }
-*/
+
+void Unblock(TCB* thread, TCB* waited_for)
+{
+	Unblock_TCB(waited_for, thread);
+}
