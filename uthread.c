@@ -19,14 +19,31 @@ int Dispatch_next_thread()
 void Change_current_thread()
 {
 	Ready(Running()); // Running thread is 'stopped', i.e., put in the ready queue.
-	dispatch_next_thread();
+	Dispatch_next_thread();
+}
+
+void Exit_thread()
+{
+	TCB* thread = Running();
+	free(thread); // Frees pointer to thread that exited
+	Dispatch_next_thread();
 }
 
 //
 
 int uthread_create(void * (*start_routine)(void*), void * arg)
 {
+	ucontext_t* on_exit;
+	Ucontext_t* thread_context;
 
+	on_exit = Make_context_noargs(Exit_thread, NULL); // Context to be entered when the thread exits
+
+	thread_context = Make_context(start_routine, arg, on_exit); // Create thread context that runs start_routine
+
+	Create(thread_context); // Creates thread and inserts it on queue
+	Dispatch_next_thread(); // Schedules and dispatches next thread
+
+	returns something; // TODO: test for errors
 }
 
 void uthread_yield()
