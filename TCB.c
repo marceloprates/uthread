@@ -68,6 +68,8 @@ int Block_TCB(TCB* blocking_thread, TCB* waiting_thread)
 	{
 		TCB_list_add(blocking_thread->waiting_for_me, waiting_thread);
 
+		waiting_thread->state = blocked;
+
 		return 1;
 	}
 }
@@ -90,8 +92,15 @@ int Unblock_TCB(TCB* blocking_thread, TCB* waiting_thread)
 	{
 		TCB_list_remove(blocking_thread->waiting_for_me, waiting_thread);
 
+		waiting_thread->state = ready;
+
 		return 1;
 	}
+}
+
+int Is_Blocked(TCB* thread)
+{
+	return thread->state == blocked;
 }
 
 char* State_to_string(State state)

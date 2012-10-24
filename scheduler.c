@@ -19,6 +19,7 @@ int Create(ucontext_t* starting_context)
 
 int Ready(TCB* thread)
 {
+	thread->state = ready;
 	return Enqueue(ready_threads, thread);
 }
 
@@ -26,6 +27,7 @@ TCB* Schedule()
 {
 	TCB* scheduled = Dequeue(ready_threads);
 	running_thread = scheduled;
+	scheduled->state = running;
 
 	return scheduled;
 }
@@ -38,9 +40,11 @@ TCB* Running()
 void Block(TCB* thread, TCB* waited_for)
 {
 	Block_TCB(waited_for, thread);
+	thread->state = blocked;
 }
 
 void Unblock(TCB* thread, TCB* waited_for)
 {
 	Unblock_TCB(waited_for, thread);
+	thread->state = blocked;
 }
