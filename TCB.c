@@ -11,7 +11,7 @@ TCB* Create_TCB(int tid, ucontext_t* context, State state)
 
 	if(t == NULL)
 	{
-		printf("\n* Thread not created. No memory avaliable *\n");
+		printf("\n* Create_TCB: TCB not created. No memory avaliable *\n");
 
 		return NULL;
 	}
@@ -31,7 +31,7 @@ int Update_TCB(TCB* t, ucontext_t* context, State state, TCB_list* waiting_for_m
 
 	if(t == NULL)
 	{
-		printf("\n * Thread not updated. Thread was empty * \n");
+		printf("\n * Update_TCB: TCB not updated. Thread was empty * \n");
 
 		return 0;
 	}
@@ -54,13 +54,13 @@ int Block_TCB(TCB* blocking_thread, TCB* waiting_thread)
 {
 	if(blocking_thread == NULL)
 	{
-		printf(" * 'Waiting for me' queue not updated. Blocking thread was empty * \n");
+		printf(" * Block_TCB: 'Waiting for me' queue not updated. Blocking TCB was empty * \n");
 
 		return 0;
 	}
 	else if(waiting_thread == NULL)
 	{
-		printf(" * 'Waiting for me' queue not updated. Waiting thread was empty * \n");
+		printf(" * Block_TCB: 'Waiting for me' queue not updated. Waiting TCB was empty * \n");
 
 		return 0;
 	}
@@ -78,13 +78,13 @@ int Unblock_TCB(TCB* blocking_thread, TCB* waiting_thread)
 {
 	if(blocking_thread == NULL)
 	{
-		printf(" * 'Waiting for me' queue not updated. Blocking thread was empty * \n");
+		printf(" * Unblock_TCB: 'Waiting for me' queue not updated. Blocking TCB was empty * \n");
 
 		return 0;
 	}
 	else if(waiting_thread == NULL)
 	{
-		printf(" * 'Waiting for me' queue not updated. Waiting thread was empty * \n");
+		printf(" * Unblock_TCB: 'Waiting for me' queue not updated. Waiting TCB was empty * \n");
 
 		return 0;
 	}
@@ -127,7 +127,7 @@ char* TCB_to_string(TCB* tcb)
 {
 	if(tcb == NULL)
 	{
-		printf("\n * TCB was empty. Conversion to string failed * \n");
+		printf("\n * TCB_to_string: TCB was empty. Conversion to string failed * \n");
 
 		return NULL;
 	}

@@ -11,7 +11,7 @@ TCB_list* TCB_list_create()
 
 	if(new_list == NULL)
 	{
-		printf("\n * List not created. No memory avaliable * \n");
+		printf("\n * TCB_list_create: List not created. No memory avaliable * \n");
 	
 		return NULL;
 	}
@@ -35,7 +35,7 @@ int TCB_list_add(TCB_list* tcb_list, TCB* tcb)
 
 	if(new_node == NULL)
 	{
-		printf("\n * Thread %d not added. No memory avaliable * \n", tcb->tid);
+		printf("\n * TCB_list_add: Thread %d not added. No memory avaliable * \n", tcb->tid);
 
 		return 0;
 	}
@@ -186,7 +186,7 @@ int Print_TCB_list(TCB_list* tcb_list)
 
 	if(tcb_list_string == NULL)
 	{
-		printf("\n * Not able to convert list to string. List not printed *\n");	
+		printf("\n * Print_TCB_list: Not able to convert list to string. List not printed *\n");	
 		
 		return 0;
 	}

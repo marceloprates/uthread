@@ -11,7 +11,7 @@ TCB_queue* TCB_queue_create()
 
 	if(new_queue == NULL)
 	{
-		printf("\n * Queue not created. No memory avaliable * \n");
+		printf("\n * TCB_queue_create: Queue not created. No memory avaliable * \n");
 	
 		return NULL;
 	}
@@ -34,7 +34,7 @@ int Enqueue(TCB_queue *q, TCB *t)
 
 	if(new_element == NULL)
 	{
-		printf("\n * Thread nº %d not inserted. No memory avaliable * \n", t->tid);
+		printf("\n * Enqueue: Thread nº %d not inserted. No memory avaliable * \n", t->tid);
 		
 		return 0;
 	}
@@ -55,8 +55,6 @@ int Enqueue(TCB_queue *q, TCB *t)
 			q->rear = (q->rear)->next;
 		}
 
-		
-
 		return 1;
 	}
 }
@@ -65,7 +63,7 @@ TCB* Dequeue(TCB_queue* tcb_queue)
 {
 	if(TCB_queue_is_empty(tcb_queue))
 	{
-		printf("\n * Queue already empty. Not dequeued * \n");
+		printf("\n * Dequeue: Queue already empty. Not dequeued * \n");
 		return NULL;
 	}
 	else if((tcb_queue->front) == (tcb_queue->rear)) // queue has only one element
@@ -121,7 +119,7 @@ int Print_TCB_queue(TCB_queue* tcb_queue)
 
 	if(tcb_queue_string == NULL)
 	{
-		printf("\n * Not able to convert queue to string. Queue not printed *\n");	
+		printf("\n * Print_TCB_queue: Not able to convert queue to string. Queue not printed *\n");	
 		
 		return 0;
 	}
@@ -132,24 +130,3 @@ int Print_TCB_queue(TCB_queue* tcb_queue)
 		return 1;
 	}
 }
-
-/*
-int main(int argc, char *argv[])
-{
-	TCB_queue* q = TCB_queue_create();
-
-	TCB* t1 = Create_TCB(1,NULL,ready);
-	TCB* t2 = Create_TCB(2,NULL,ready);
-	TCB* t3 = Create_TCB(3,NULL,ready);
-	TCB* t4 = Create_TCB(4,NULL,ready);
-	
-	printf("\nEnqueuing thread %d...\n",t1->tid); Enqueue(q,t1); Print_TCB_queue(q); printf("\n");
-	printf("\nEnqueuing thread %d...\n",t2->tid); Enqueue(q,t2); Print_TCB_queue(q); printf("\n");
-	printf("\nBlocking thread %d with thread %d...\n",t1->tid,t2->tid); Block(t1,t2); Print_TCB_queue(q); printf("\n");
-	printf("\nEnqueuing thread %d...\n", t3->tid); Enqueue(q,t3); Print_TCB_queue(q); printf("\n");
-	printf("\nBlocking thread %d with thread %d...\n",t1->tid,t3->tid); Block(t1,t3); Print_TCB_queue(q); printf("\n");
-	printf("\nDenqueuing and saving content into TCB variable 't4'...\n"); t4 = Dequeue(q); Print_TCB_queue(q); printf("\n");
-	printf("\nEnqueuing TCB variable 't4' A.K.A. thread %d...\n",t4->tid); Enqueue(q,t4); Print_TCB_queue(q); printf("\n");
-	printf("\nHugging Joel Carbonera...\n");
-}
-*/
