@@ -25,7 +25,7 @@ void Change_current_thread()
 void Exit_thread()
 {
 	TCB* thread = Running();
-	free(thread); // Frees pointer to thread that exited
+	free(thread); // Frees pointer to thread that exited.
 	Dispatch_next_thread();
 }
 
@@ -36,14 +36,14 @@ int uthread_create(void * (*start_routine)(void*), void * arg)
 	ucontext_t* on_exit;
 	Ucontext_t* thread_context;
 
-	on_exit = Make_context_noargs(Exit_thread, NULL); // Context to be entered when the thread exits
+	on_exit = Make_context_noargs(Exit_thread, NULL); // Context to be entered when the thread exits.
 
-	thread_context = Make_context(start_routine, arg, on_exit); // Create thread context that runs start_routine
+	thread_context = Make_context(start_routine, arg, on_exit); // Create thread context that runs start_routine.
 
-	Create(thread_context); // Creates thread and inserts it on queue
-	Dispatch_next_thread(); // Schedules and dispatches next thread
+	Create(thread_context); // Creates thread and inserts it on queue.
+	Dispatch_next_thread(); // Schedules and dispatches next thread.
 
-	returns something; // TODO: test for errors
+	returns something; // TODO: test for errors.
 }
 
 void uthread_yield()
@@ -52,7 +52,7 @@ void uthread_yield()
 
 	Save(Running()); // Saves 'here' as current thread context.
 
-	if(!has_yielded) // Stop thread only if thread has not yielded yet.
+	if(!has_yielded) // Stops thread only if thread has not yielded yet.
 	{
 		has_yielded = 1;
 		change_current_thread();
@@ -67,11 +67,11 @@ int uthread_join(TCB* waited_for)
 {
 	TCB* this_thread = Running();
 	
-	Block(this_thread, waited_for); // Blocks this thread's TCB
+	Block(this_thread, waited_for); // Blocks this thread's TCB.
 
 	Save(this_thread); // Saves 'here' as current thread context.
 
-	if(Is_Blocked(this_thread)) // Stop thread only if thread is blocked.
+	if(Is_Blocked(this_thread)) // Stops thread only if thread is blocked.
 	{
 		change_current_thread();
 	}
