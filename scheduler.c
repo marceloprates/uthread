@@ -4,14 +4,10 @@ TCB_queue* ready_threads;
 TCB* running_thread;
 int tid;
 
-void Init_scheduler()
+void Init_scheduler(ucontext_t* main_context)
 {
 	ready_threads = TCB_queue_create();
 	tid = 0;
-}
-
-void Create_main(ucontext_t* main_context)
-{
 	running_thread = Create_TCB(tid++, main_context, running);
 }
 
