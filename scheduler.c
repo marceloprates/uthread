@@ -10,6 +10,11 @@ void Init_scheduler()
 	tid = 0;
 }
 
+void Create_main(ucontext_t* main_context)
+{
+	running_thread = Create_TCB(tid++, main_context, running);
+}
+
 int Create(ucontext_t* starting_context)
 {
 	TCB* thread = Create_TCB(tid++, starting_context, ready);
