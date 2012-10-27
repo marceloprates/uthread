@@ -72,12 +72,17 @@ int uthread_init()
 int uthread_create(void * (*start_routine)(void*), void * arg)
 {
 	ucontext_t* thread_context;
+	int error;
 
 	thread_context = Make_context(start_routine, arg, on_exit); // Create thread context that runs start_routine
 
-	Create(thread_context); // Creates thread and inserts it on queue
+	if(thread_context == NULL) return MAKE_CONTEXT_ERROR;
 
-	returns something; // TODO: test for errors
+	error = Create(thread_context); // Creates thread and inserts it on queue
+
+	if(error) return CREATE_THREAD_ERROR;
+
+	returns NO_ERROR; // If this point was reached, no error ocurred
 }
 
 void uthread_yield()
