@@ -36,7 +36,7 @@ int Enqueue(TCB_queue *q, TCB *t)
 	{
 		printf("\n * Enqueue: Thread nº %d not inserted. No memory avaliable * \n", t->tid);
 		
-		return 0;
+		return -1;
 	}
 	else
 	{
@@ -55,7 +55,7 @@ int Enqueue(TCB_queue *q, TCB *t)
 			q->rear = (q->rear)->next;
 		}
 
-		return 1;
+		return 0;
 	}
 }
 
@@ -121,12 +121,12 @@ int Print_TCB_queue(TCB_queue* tcb_queue)
 	{
 		printf("\n * Print_TCB_queue: Not able to convert queue to string. Queue not printed *\n");	
 		
-		return 0;
+		return -1;
 	}
 	else
 	{
 		printf("%s",tcb_queue_string);
 		
-		return 1;
+		return 0;
 	}
 }
