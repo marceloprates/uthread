@@ -9,6 +9,8 @@ int Dispatch_next_thread()
 	if(thread != NULL)
 	{
 		Dispatch(thread);
+
+		return -1 // If execution reached this point, an error ocurred
 	}
 	else
 	{
@@ -34,11 +36,18 @@ void Exit_thread()
 int uthread_init()
 {
 	ucontext_t* main_context = (ucontext_t*)malloc(sizeof(ucontext_t));
-	bool gotcontext = 0;
+	int error;
+	int gotcontext = 0;
+
+	if(main_context == NULL) return OUT_OF_MEMORY_ERROR;
 
 	on_exit = Make_context_noargs(Exit_thread, NULL); // Context to be entered when the thread exits
 
-	getcontext(main_context);
+	if(on_exit == NULL) return MAKE_CONTEXT_ERROR;
+
+	error = getcontext(main_context);
+
+	if(error) return GET_CONTEXT_ERROR;
 
 	if(!gotcontext)
 	{
@@ -47,13 +56,17 @@ int uthread_init()
 		// Sets the context to run when the main thread exits, so that other threads can keep running
 		main_context->uc_link = on_exit;
 
-		Create(main_context); // Creates main thread
+		error = Create(main_context); // Creates main thread
+
+		if(error) return CREATE_THREAD_ERROR;
 
 		// Sets main thread to run; this is necessary so the running context is the one with its uc_link set to on_exit
-		Dispatch_next_thread(); 
+		error = Dispatch_next_thread();
+
+		if(error) return SCHEDULING_ERROR;
 	}
 
-	returns something; // TODO: test for errors
+	return NO_ERROR; // If this point was reached, no error ocurred
 }
 
 int uthread_create(void * (*start_routine)(void*), void * arg)
@@ -102,3 +115,7 @@ int uthread_join(TCB* waited_for)
 	}
 }
 
+void uthread_exit()
+{
+	// Does nothing
+}
