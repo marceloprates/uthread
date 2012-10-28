@@ -121,6 +121,23 @@ int TCB_list_contains(TCB_list* tcb_list, TCB* tcb)
 	return 0;
 }
 
+TCB* TCB_list_get(TCB_list* tcb_list, int tid)
+{
+	TCB_list_node* pointer = tcb_list->front;
+
+	while(pointer != NULL)
+	{
+		if((pointer->data)->tid == tid)
+		{
+			return (pointer->data);
+		}
+
+		pointer = pointer->next;
+	}
+
+	return NULL;
+}
+
 char* TCB_list_enumerate_tids(TCB_list* tcb_list)
 {
 	char* tids_string = "";

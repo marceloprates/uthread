@@ -1,5 +1,6 @@
 #include "scheduler.h"
 
+TCB_list* all_threads;
 TCB_queue* ready_threads;
 TCB* running_thread;
 int tid;
@@ -17,7 +18,9 @@ int Init_scheduler()
 
 int Create(ucontext_t* starting_context)
 {
-	TCB* thread = Create_TCB(tid++, starting_context, ready);
+	TCB* thread = TCB_create(tid++, starting_context, ready);
+
+	TCB_list_add(all_threads, thread);
 
 	return Ready(thread);
 }
@@ -56,12 +59,17 @@ TCB* Running()
 
 void Block(TCB* thread, TCB* waited_for)
 {
-	Block_TCB(waited_for, thread);
+	TCB_Block(waited_for, thread);
 	thread->state = blocked;
 }
 
 void Unblock(TCB* thread, TCB* waited_for)
 {
-	Unblock_TCB(waited_for, thread);
+	TCB_unblock(waited_for, thread);
 	thread->state = blocked;
+}
+
+TCB* Find_TCB(int tid)
+{
+	return TCB_list_get(all_threads, tid);
 }
