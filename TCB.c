@@ -5,7 +5,7 @@
 #include <stdio.h>
 #include <string.h>
 
-TCB* Create_TCB(int tid, ucontext_t* context, State state)
+TCB* TCB_create(int tid, ucontext_t* context, State state)
 {
 	TCB* t = (TCB*)malloc(sizeof(TCB));
 
@@ -26,31 +26,12 @@ TCB* Create_TCB(int tid, ucontext_t* context, State state)
 	}
 }
 
-int Update_TCB(TCB* t, ucontext_t* context, State state, TCB_list* waiting_for_me)
-{
-
-	if(t == NULL)
-	{
-		printf("\n * Update_TCB: TCB not updated. Thread was empty * \n");
-
-		return 0;
-	}
-	else
-	{
-		t->context = context;
-		t->state = state;
-		t->waiting_for_me = waiting_for_me;
-		
-		return 1;
-	}
-}
-
 int TCB_equals(TCB* t1, TCB* t2)
 {
 	return (t1->tid == t2->tid);
 }
 
-int Block_TCB(TCB* blocking_thread, TCB* waiting_thread)
+int TCB_block(TCB* blocking_thread, TCB* waiting_thread)
 {
 	if(blocking_thread == NULL)
 	{
@@ -74,7 +55,7 @@ int Block_TCB(TCB* blocking_thread, TCB* waiting_thread)
 	}
 }
 
-int Unblock_TCB(TCB* blocking_thread, TCB* waiting_thread)
+int TCB_unblock(TCB* blocking_thread, TCB* waiting_thread)
 {
 	if(blocking_thread == NULL)
 	{
@@ -98,7 +79,7 @@ int Unblock_TCB(TCB* blocking_thread, TCB* waiting_thread)
 	}
 }
 
-int Is_Blocked(TCB* thread)
+int TCB_is_Blocked(TCB* thread)
 {
 	return thread->state == blocked;
 }
