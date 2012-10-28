@@ -27,7 +27,7 @@ void Change_current_thread()
 void Exit_thread()
 {
 	TCB* thread = Running();
-	TCB_unblock_waiting_for_me(thread);
+	Unblock_waiting_for_me(thread);
 	free(thread->waiting_for_me);
 	free(thread); // Frees pointer to thread that exited
 	Dispatch_next_thread();
