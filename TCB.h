@@ -30,8 +30,8 @@ typedef struct TCB_struct TCB;
 
 TCB* 	TCB_create(int tid, ucontext_t* context, State state);
 int 	TCB_equals(TCB* t1, TCB* t2);
-int 	TCB_block(TCB* blocking_thread, TCB* waiting_thread);
-int 	TCB_unblock(TCB* blocking_thread, TCB* waiting_thread);
+int 	TCB_block(TCB* waiting_thread, TCB* blocking_thread);
+int 	TCB_unblock(TCB* waiting_thread, TCB* blocking_thread);
 int 	TCB_is_blocked(TCB* thread);
 char* 	State_to_string(State state);
 char* 	TCB_to_string(TCB* tcb);

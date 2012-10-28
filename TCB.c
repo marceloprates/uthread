@@ -31,7 +31,7 @@ int TCB_equals(TCB* t1, TCB* t2)
 	return (t1->tid == t2->tid);
 }
 
-int TCB_block(TCB* blocking_thread, TCB* waiting_thread)
+int TCB_block(TCB* waiting_thread, TCB* blocking_thread)
 {
 	if(blocking_thread == NULL)
 	{
@@ -55,7 +55,7 @@ int TCB_block(TCB* blocking_thread, TCB* waiting_thread)
 	}
 }
 
-int TCB_unblock(TCB* blocking_thread, TCB* waiting_thread)
+int TCB_unblock(TCB* waiting_thread, TCB* blocking_thread)
 {
 	if(blocking_thread == NULL)
 	{
