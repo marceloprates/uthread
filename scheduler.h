@@ -1,6 +1,6 @@
 #include "TCB_queue.h"
 
-void Init_scheduler();
+int Init_scheduler();
 
 int Create(ucontext_t* starting_context);
 

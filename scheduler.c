@@ -4,10 +4,15 @@ TCB_queue* ready_threads;
 TCB* running_thread;
 int tid;
 
-void Init_scheduler()
+int Init_scheduler()
 {
 	ready_threads = TCB_queue_create();
+
+	if(ready_threads == NULL) return -1;
+
 	tid = 0;
+
+	return 0;
 }
 
 int Create(ucontext_t* starting_context)
@@ -19,8 +24,20 @@ int Create(ucontext_t* starting_context)
 
 int Ready(TCB* thread)
 {
+	int error;
+
 	thread->state = ready;
-	return Enqueue(ready_threads, thread);
+
+	error = Enqueue(ready_threads, thread);
+
+	if(error)
+	{
+		return error;
+	}
+	else
+	{
+		return thread->tid;
+	}
 }
 
 TCB* Schedule()

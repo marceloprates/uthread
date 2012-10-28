@@ -1,6 +1,4 @@
-#include "scheduler.h"
-#include "dispatcher.h"
-#include "contexts.h"
+#include "uthread.h"
 
 ucontext_t* on_exit;
 
@@ -11,6 +9,8 @@ int Dispatch_next_thread()
 	if(thread != NULL)
 	{
 		Dispatch(thread);
+
+		return -1 // If execution reached this point, an error ocurred
 	}
 	else
 	{
@@ -31,42 +31,68 @@ void Exit_thread()
 	Dispatch_next_thread();
 }
 
+int Is_error(int code)
+{
+	return code < 0;
+}
+
 //
 
 int uthread_init()
 {
 	ucontext_t* main_context = (ucontext_t*)malloc(sizeof(ucontext_t));
-	bool gotcontext = 0;
+	int error;
+	int code;
+	int gotcontext = 0;
+
+	if(main_context == NULL) return OUT_OF_MEMORY_ERROR;
+
+	code = Init_scheduler();
+
+	if(Is_error(code)) return OUT_OF_MEMORY_ERROR;
 
 	on_exit = Make_context_noargs(Exit_thread, NULL); // Context to be entered when the thread exits
 
-	getcontext(main_context);
+	if(on_exit == NULL) return MAKE_CONTEXT_ERROR;
+
+	error = getcontext(main_context);
 
 	if(!gotcontext)
 	{
 		gotcontext = 1;
 
+		if(error) return GET_CONTEXT_ERROR;
+
 		// Sets the context to run when the main thread exits, so that other threads can keep running
 		main_context->uc_link = on_exit;
 
-		Create(main_context); // Creates main thread
+		code = Create(main_context); // Creates main thread
+
+		if(Is_error(code)) return CREATE_THREAD_ERROR;
 
 		// Sets main thread to run; this is necessary so the running context is the one with its uc_link set to on_exit
-		Dispatch_next_thread(); 
+		code = Dispatch_next_thread();
+
+		if(Is_error(code)) return SCHEDULING_ERROR;
 	}
 
-	returns something; // TODO: test for errors
+	return NO_ERROR; // If this point was reached, no error ocurred
 }
 
 int uthread_create(void * (*start_routine)(void*), void * arg)
 {
 	ucontext_t* thread_context;
+	int error;
 
 	thread_context = Make_context(start_routine, arg, on_exit); // Create thread context that runs start_routine
 
-	Create(thread_context); // Creates thread and inserts it on queue
+	if(thread_context == NULL) return MAKE_CONTEXT_ERROR;
 
-	returns something; // TODO: test for errors
+	code = Create(thread_context); // Creates thread and inserts it on queue
+
+	if(Is_error(code)) return CREATE_THREAD_ERROR;
+
+	returns code; // Contains thread id
 }
 
 void uthread_yield()
@@ -110,3 +136,7 @@ int uthread_join(int waited_thread_tid)
 	}
 }
 
+void uthread_exit()
+{
+	// Does nothing
+}
