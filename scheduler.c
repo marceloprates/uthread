@@ -70,6 +70,20 @@ void Block(TCB* thread, TCB* waited_for)
 void Unblock(TCB* thread, TCB* waited_for)
 {
 	TCB_unblock(thread, waited_for);
+
+	Ready(thread);
+}
+
+void Unblock_waiting_for_me(TCB* thread)
+{
+	TCB_list_node* pointer = (thread->waiting_for_me)->front;
+
+	while(pointer != NULL)
+	{
+		Unblock(pointer->data, thread);
+
+		pointer = pointer->next;
+	}
 }
 
 TCB* Find_TCB(int tid)
