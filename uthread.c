@@ -121,7 +121,7 @@ int uthread_join(int waited_thread_tid)
 	if(waited_thread == NULL) // Thread with 'waited_thread_tid' tid not found. Return -1.
 		return -1;
 	
-	Block(this_thread, waited_thread); // Blocks this thread's TCB
+	TCB_block(waited_thread, this_thread); // Blocks this thread's TCB
 
 	Save(this_thread); // Saves 'here' as current thread context.
 
@@ -131,7 +131,7 @@ int uthread_join(int waited_thread_tid)
 	}
 	else // If thread isn't blocked, we're returning to this point via context switching: we don't stop the thread, just return.
 	{
-		return 1;
+		return 0;
 	}
 }
 
