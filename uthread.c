@@ -117,7 +117,7 @@ int uthread_join(int waited_thread_tid)
 	TCB* this_thread = Running();
 
 	TCB* waited_thread = (TCB*)malloc(sizeof(TCB));
-	waited_thread = TCB_list_get(waited_thread_tid);
+	waited_thread = Find_TCB(tid);
 
 	if(waited_thread == NULL) // No memory avaliable or thread with 'waited_thread_tid' tid not found. Return -1.
 		return -1;
