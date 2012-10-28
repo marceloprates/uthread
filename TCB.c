@@ -79,6 +79,18 @@ int TCB_unblock(TCB* blocking_thread, TCB* waiting_thread)
 	}
 }
 
+void TCB_unblock_waiting_for_me(TCB* thread)
+{
+	TCB_list_node* pointer = (thread->waiting_for_me)->front;
+
+	while(pointer != NULL)
+	{
+		TCB_unblock(thread, pointer->data);
+
+		pointer = pointer->next;
+	}
+}
+
 int TCB_is_blocked(TCB* thread)
 {
 	return thread->state == blocked;
