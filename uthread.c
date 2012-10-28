@@ -1,6 +1,6 @@
 #include "uthread.h"
 
-ucontext_t* on_exit;
+ucontext_t* on_thread_exit;
 
 int Dispatch_next_thread()
 {
@@ -10,7 +10,7 @@ int Dispatch_next_thread()
 	{
 		Dispatch(thread);
 
-		return -1 // If execution reached this point, an error ocurred
+		return -1; // If execution reached this point, an error ocurred
 	}
 	else
 	{
@@ -51,9 +51,9 @@ int uthread_init()
 
 	if(Is_error(code)) return OUT_OF_MEMORY_ERROR;
 
-	on_exit = Make_context_noargs(Exit_thread, NULL); // Context to be entered when the thread exits
+	on_thread_exit = Make_context_noargs(Exit_thread, NULL); // Context to be entered when the thread exits
 
-	if(on_exit == NULL) return MAKE_CONTEXT_ERROR;
+	if(on_thread_exit == NULL) return MAKE_CONTEXT_ERROR;
 
 	error = getcontext(main_context);
 
@@ -64,13 +64,13 @@ int uthread_init()
 		if(error) return GET_CONTEXT_ERROR;
 
 		// Sets the context to run when the main thread exits, so that other threads can keep running
-		main_context->uc_link = on_exit;
+		main_context->uc_link = on_thread_exit;
 
 		code = Create(main_context); // Creates main thread
 
 		if(Is_error(code)) return CREATE_THREAD_ERROR;
 
-		// Sets main thread to run; this is necessary so the running context is the one with its uc_link set to on_exit
+		// Sets main thread to run; this is necessary so the running context is the one with its uc_link set to on_thread_exit
 		code = Dispatch_next_thread();
 
 		if(Is_error(code)) return SCHEDULING_ERROR;
@@ -82,9 +82,9 @@ int uthread_init()
 int uthread_create(void * (*start_routine)(void*), void * arg)
 {
 	ucontext_t* thread_context;
-	int error;
+	int code;
 
-	thread_context = Make_context(start_routine, arg, on_exit); // Create thread context that runs start_routine
+	thread_context = Make_context(start_routine, arg, on_thread_exit); // Create thread context that runs start_routine
 
 	if(thread_context == NULL) return MAKE_CONTEXT_ERROR;
 
@@ -92,7 +92,7 @@ int uthread_create(void * (*start_routine)(void*), void * arg)
 
 	if(Is_error(code)) return CREATE_THREAD_ERROR;
 
-	returns code; // Contains thread id
+	return code; // Contains thread id
 }
 
 void uthread_yield()
@@ -116,19 +116,18 @@ int uthread_join(int waited_thread_tid)
 {
 	TCB* this_thread = Running();
 
-	TCB* waited_thread = (TCB*)malloc(sizeof(TCB));
-	waited_thread = Find_TCB(tid);
+	TCB* waited_thread = Find_TCB(waited_thread_tid);
 
-	if(waited_thread == NULL) // No memory avaliable or thread with 'waited_thread_tid' tid not found. Return -1.
+	if(waited_thread == NULL) // Thread with 'waited_thread_tid' tid not found. Return -1.
 		return -1;
 	
 	Block(this_thread, waited_thread); // Blocks this thread's TCB
 
 	Save(this_thread); // Saves 'here' as current thread context.
 
-	if(Is_Blocked(this_thread)) // Stop thread only if thread is blocked.
+	if(TCB_is_blocked(this_thread)) // Stop thread only if thread is blocked.
 	{
-		Change_current_thread();
+		Dispatch_next_thread();
 	}
 	else // If thread isn't blocked, we're returning to this point via context switching: we don't stop the thread, just return.
 	{

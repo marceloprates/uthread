@@ -8,6 +8,7 @@ int tid;
 int Init_scheduler()
 {
 	ready_threads = TCB_queue_create();
+	all_threads = TCB_list_create();
 
 	if(ready_threads == NULL) return -1;
 
@@ -59,7 +60,7 @@ TCB* Running()
 
 void Block(TCB* thread, TCB* waited_for)
 {
-	TCB_Block(waited_for, thread);
+	TCB_block(waited_for, thread);
 	thread->state = blocked;
 }
 
