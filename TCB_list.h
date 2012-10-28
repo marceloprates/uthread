@@ -31,6 +31,7 @@ int TCB_list_is_empty(TCB_list* tcb_list);
 int TCB_list_add(TCB_list* tcb_list, TCB* tcb);
 TCB* TCB_list_remove(TCB_list* tcb_list, TCB* tcb);
 int TCB_list_contains(TCB_list* tcb_list, TCB* tcb);
+TCB* TCB_list_get(TCB_list* tcb_list, int tid);
 char* TCB_list_enumerate_tids(TCB_list* tcb_list);
 char* TCB_list_to_string(TCB_list* tcb_list);
 int Print_TCB_list(TCB_list* tcb_list);
