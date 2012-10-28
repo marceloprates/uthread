@@ -79,7 +79,7 @@ int TCB_unblock(TCB* blocking_thread, TCB* waiting_thread)
 	}
 }
 
-int TCB_is_Blocked(TCB* thread)
+int TCB_is_blocked(TCB* thread)
 {
 	return thread->state == blocked;
 }

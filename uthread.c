@@ -116,17 +116,16 @@ int uthread_join(int waited_thread_tid)
 {
 	TCB* this_thread = Running();
 
-	TCB* waited_thread = (TCB*)malloc(sizeof(TCB));
-	waited_thread = Find_TCB(tid);
+	TCB* waited_thread = Find_TCB(waited_thread_tid);
 
-	if(waited_thread == NULL) // No memory avaliable or thread with 'waited_thread_tid' tid not found. Return -1.
+	if(waited_thread == NULL) // Thread with 'waited_thread_tid' tid not found. Return -1.
 		return -1;
 	
 	Block(this_thread, waited_thread); // Blocks this thread's TCB
 
 	Save(this_thread); // Saves 'here' as current thread context.
 
-	if(Is_Blocked(this_thread)) // Stop thread only if thread is blocked.
+	if(TCB_is_blocked(this_thread)) // Stop thread only if thread is blocked.
 	{
 		Dispatch_next_thread();
 	}

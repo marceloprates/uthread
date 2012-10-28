@@ -59,7 +59,7 @@ TCB* Running()
 
 void Block(TCB* thread, TCB* waited_for)
 {
-	TCB_Block(waited_for, thread);
+	TCB_block(waited_for, thread);
 	thread->state = blocked;
 }
 

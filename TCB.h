@@ -33,6 +33,7 @@ int 	Update_TCB(TCB* t, ucontext_t* context, State state, TCB_list* waiting_for_
 int 	TCB_equals(TCB* t1, TCB* t2);
 int 	Block_TCB(TCB* blocking_thread, TCB* waiting_thread);
 int 	Unblock_TCB(TCB* blocking_thread, TCB* waiting_thread);
+int 	TCB_is_blocked(TCB* thread);
 char* 	State_to_string(State state);
 char* 	TCB_to_string(TCB* tcb);
 
