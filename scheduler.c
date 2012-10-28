@@ -47,8 +47,12 @@ int Ready(TCB* thread)
 TCB* Schedule()
 {
 	TCB* scheduled = Dequeue(ready_threads);
-	running_thread = scheduled;
-	scheduled->state = running;
+
+	if(scheduled != NULL)
+	{
+		running_thread = scheduled;
+		scheduled->state = running;
+	}
 
 	return scheduled;
 }
@@ -61,13 +65,11 @@ TCB* Running()
 void Block(TCB* thread, TCB* waited_for)
 {
 	TCB_block(thread, waited_for);
-	thread->state = blocked;
 }
 
 void Unblock(TCB* thread, TCB* waited_for)
 {
 	TCB_unblock(thread, waited_for);
-	thread->state = blocked;
 }
 
 TCB* Find_TCB(int tid)

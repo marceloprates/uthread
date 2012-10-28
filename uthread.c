@@ -27,6 +27,8 @@ void Change_current_thread()
 void Exit_thread()
 {
 	TCB* thread = Running();
+	TCB_unblock_waiting_for_me(thread);
+	free(thread->waiting_for_me);
 	free(thread); // Frees pointer to thread that exited
 	Dispatch_next_thread();
 }
@@ -121,7 +123,7 @@ int uthread_join(int waited_thread_tid)
 	if(waited_thread == NULL) // Thread with 'waited_thread_tid' tid not found. Return -1.
 		return -1;
 	
-	Block(waited_thread, this_thread); // Blocks this thread's TCB
+	Block(this_thread, waited_thread); // Blocks this thread's TCB
 
 	Save(this_thread); // Saves 'here' as current thread context.
 
