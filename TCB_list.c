@@ -95,7 +95,7 @@ TCB* TCB_list_remove(TCB_list* tcb_list, TCB* tcb)
 			{
 				(pointer->previous)->next = pointer->next;
 
-				pointer = pointer->next;
+				(pointer->next)->previous = pointer->previous;
 
 				TCB* data = (TCB*)malloc(sizeof(TCB));
 				*data = *(to_be_removed->data);
