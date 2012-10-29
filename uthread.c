@@ -6,6 +6,8 @@ int Dispatch_next_thread()
 {
 	TCB* thread = Schedule();
 
+	printf("\n * running thread %d *\n", thread->tid);
+
 	if(thread != NULL)
 	{
 		Dispatch(thread);
@@ -142,16 +144,20 @@ int uthread_join(int waited_thread_tid)
 
 void uthread_exit()
 {
+	printf("\n * bp 1 * \n");
+
 	TCB* this_thread = Running();
 
 	Save(this_thread);
 
-	if(No_threads()) // If there are no threads (all threads exited) we can safely return and finish the whole process.
+	if(No_threads_beside_main()) // If there are no threads (all threads exited) we can safely return and finish the whole process.
 	{
+		printf("\n * bp 2 * \n");
 		return;
 	}
 	else // If there are still threads, we switch the context to the next thread in the ready queue.
 	{
+		printf("\n * bp 3 * \n");
 		Change_current_thread();
 	}
 }
