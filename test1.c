@@ -1,5 +1,7 @@
 #include "uthread.h"
 
+// Status atual: PASS
+
 void proc1(void* n)
 {
 	int i = ((int*)n)[0];
