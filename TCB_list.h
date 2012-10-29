@@ -35,3 +35,4 @@ TCB* TCB_list_get(TCB_list* tcb_list, int tid);
 char* TCB_list_enumerate_tids(TCB_list* tcb_list);
 char* TCB_list_to_string(TCB_list* tcb_list);
 int Print_TCB_list(TCB_list* tcb_list);
+TCB_list* TCB_list_clone(TCB_list* tcb_list);

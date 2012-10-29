@@ -1,5 +1,9 @@
 #include "uthread.h"
 
+void proc1(void* n);
+void proc2(void* n);
+void proc3(void* n);
+
 void proc1(void* n)
 {
 	int i = ((int*)n)[0];
@@ -18,10 +22,18 @@ void proc1(void* n)
 }
 
 void proc2(void* n)
-{
+{	
 	int i = ((int*)n)[0];
 
 	printf("--Hello from proc2--\n");
+
+	int m[1];
+
+	m[0] = 42;
+
+	int id3 = uthread_create(proc3, m);
+
+	printf("--Created thread 3--\n");
 
 	for(; i > 0; i--)
 	{
@@ -29,6 +41,21 @@ void proc2(void* n)
 		uthread_yield();
 	}
 }
+
+void proc3(void* n)
+{
+	int i = ((int*)n)[0];
+
+	printf("--Hello from proc3--\n");
+
+	for(; i > 0; i--)
+	{
+		printf("k=%d\n", i);
+		uthread_yield();
+	}
+}
+
+
 
 int main()
 {
@@ -45,6 +72,8 @@ int main()
 	printf("--Created thread 2--\n");
 	uthread_join(id1);
 	uthread_join(id2);
+
+	uthread_exit();
 
 	printf("--End of main--\n");
 

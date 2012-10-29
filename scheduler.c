@@ -86,7 +86,29 @@ void Unblock_waiting_for_me(TCB* thread)
 	}
 }
 
+void Kill(TCB* thread)
+{
+	Unblock_waiting_for_me(thread);
+
+	TCB_list_remove(all_threads, thread);
+
+	/*
+	if(TCB_queue_contains(ready_threads, thread))
+	{
+		TCB_queue_remove(ready_threads, thread);
+	}
+	*/
+
+	free(thread->waiting_for_me);
+	free(thread); // Frees pointer to thread that exited
+}
+
 TCB* Find_TCB(int tid)
 {
 	return TCB_list_get(all_threads, tid);
+}
+
+int No_threads()
+{
+	return (TCB_list_is_empty(all_threads));
 }

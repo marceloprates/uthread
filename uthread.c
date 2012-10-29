@@ -14,7 +14,7 @@ int Dispatch_next_thread()
 	}
 	else
 	{
-		return 0; // Ready queue emptyied. All threads are now finished.
+		return 0; // Ready queue emptied. All threads are now finished.
 	}
 }
 
@@ -27,9 +27,12 @@ void Change_current_thread()
 void Exit_thread()
 {
 	TCB* thread = Running();
-	Unblock_waiting_for_me(thread);
+	Kill(thread);
+	/*Unblock_waiting_for_me(thread);
+	
 	free(thread->waiting_for_me);
 	free(thread); // Frees pointer to thread that exited
+	*/
 	Dispatch_next_thread();
 }
 
@@ -139,5 +142,16 @@ int uthread_join(int waited_thread_tid)
 
 void uthread_exit()
 {
-	// Does nothing
+	TCB* this_thread = Running();
+
+	Save(this_thread);
+
+	if(No_threads()) // If there are no threads (all threads exited) we can safely return and finish the whole process.
+	{
+		return;
+	}
+	else // If there are still threads, we switch the context to the next thread in the ready queue.
+	{
+		Change_current_thread();
+	}
 }
