@@ -84,7 +84,12 @@ TCB* TCB_list_remove(TCB_list* tcb_list, TCB* tcb)
 					(tcb_list->front)->previous = NULL;
 				}
 
-				return to_be_removed->data;
+				TCB* data = (TCB*)malloc(sizeof(TCB));
+				*data = *(to_be_removed->data);
+
+				free(to_be_removed);
+
+				return data;
 			}
 			else
 			{
@@ -92,7 +97,12 @@ TCB* TCB_list_remove(TCB_list* tcb_list, TCB* tcb)
 
 				pointer = pointer->next;
 
-				return to_be_removed->data;
+				TCB* data = (TCB*)malloc(sizeof(TCB));
+				*data = *(to_be_removed->data);
+
+				free(to_be_removed);
+
+				return data;
 			}
 		}
 		else
@@ -213,4 +223,20 @@ int Print_TCB_list(TCB_list* tcb_list)
 		
 		return 1;
 	}
+}
+
+TCB_list* TCB_list_clone(TCB_list* tcb_list)
+{
+	TCB_list* clone = TCB_list_create();
+
+	TCB_list_node* pointer = tcb_list->front;
+
+	while(pointer != NULL)
+	{
+		TCB_list_add(clone, pointer->data);
+
+		pointer = pointer->next;
+	}
+
+	return clone;
 }

@@ -7,10 +7,10 @@ int main(int argc, char *argv[])
 {
 	TCB_list* l = TCB_list_create();
 
-	TCB* t1 = Create_TCB(1,NULL,ready);
-	TCB* t2 = Create_TCB(2,NULL,ready);
-	TCB* t3 = Create_TCB(3,NULL,ready);
-	TCB* t4 = Create_TCB(4,NULL,ready);
+	TCB* t1 = TCB_create(1,NULL,ready);
+	TCB* t2 = TCB_create(2,NULL,ready);
+	TCB* t3 = TCB_create(3,NULL,ready);
+	TCB* t4 = TCB_create(4,NULL,ready);
 	
 	printf("\nAdding thread %d to list...\n",t1->tid); TCB_list_add(l,t1); Print_TCB_list(l); printf("\n");
 	printf("\nAdding thread %d to list...\n",t2->tid); TCB_list_add(l,t2); Print_TCB_list(l); printf("\n");
