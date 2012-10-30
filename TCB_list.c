@@ -42,9 +42,14 @@ int TCB_list_add(TCB_list* tcb_list, TCB* tcb)
 	else if(tcb_list->rear == NULL) // list is empty
 	{
 		new_node->data = tcb;
+
 		tcb_list->rear = new_node;
+		tcb_list->rear->next = NULL;
+		tcb_list->rear->previous = NULL;
+
 		tcb_list->front = new_node;
-		(tcb_list->rear)->next = NULL;
+		tcb_list->front->next = NULL;
+		tcb_list->front->previous = NULL;
 
 		return 1;
 	}
@@ -54,6 +59,7 @@ int TCB_list_add(TCB_list* tcb_list, TCB* tcb)
 
 		(tcb_list->rear)->next = new_node;
 		new_node->previous = tcb_list->rear;
+		new_node->next = NULL;
 
 		tcb_list->rear = (tcb_list->rear)->next;
 
