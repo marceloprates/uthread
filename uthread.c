@@ -144,6 +144,7 @@ int uthread_join(int waited_thread_tid)
 
 void uthread_exit()
 {
+	/*
 	printf("\n * bp 1 * \n");
 
 	TCB* this_thread = Running();
@@ -159,5 +160,11 @@ void uthread_exit()
 	{
 		printf("\n * bp 3 * \n");
 		Change_current_thread();
+	}
+	*/
+
+	while(!No_threads_beside_main())
+	{
+		uthread_yield();
 	}
 }
