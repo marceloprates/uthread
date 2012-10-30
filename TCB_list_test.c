@@ -15,9 +15,9 @@ int main(int argc, char *argv[])
 	printf("\nAdding thread %d to list...\n",t1->tid); TCB_list_add(l,t1); Print_TCB_list(l); printf("\n");
 	printf("\nAdding thread %d to list...\n",t2->tid); TCB_list_add(l,t2); Print_TCB_list(l); printf("\n");
 	printf("\nAdding thread %d to list...\n", t3->tid); TCB_list_add(l,t3); Print_TCB_list(l); printf("\n");
+	printf("\nRemoving thread %d and saving content into TCB variable 't4'...\n", t3->tid); t4 = TCB_list_remove(l,t3); Print_TCB_list(l); printf("\n");
 	printf("\nRemoving thread %d and saving content into TCB variable 't4'...\n", t1->tid); t4 = TCB_list_remove(l,t1); Print_TCB_list(l); printf("\n");
 	printf("\nRemoving thread %d and saving content into TCB variable 't4'...\n", t2->tid); t4 = TCB_list_remove(l,t2); Print_TCB_list(l); printf("\n");
-	printf("\nRemoving thread %d and saving content into TCB variable 't4'...\n", t3->tid); t4 = TCB_list_remove(l,t3); Print_TCB_list(l); printf("\n");
 	printf("\nAdding thread %d to list...\n", t3->tid); TCB_list_add(l,t3); Print_TCB_list(l); printf("\n");
 	printf("\nRemoving thread %d and saving content into TCB variable 't4'...\n", t3->tid); t4 = TCB_list_remove(l,t3); Print_TCB_list(l); printf("\n");
 

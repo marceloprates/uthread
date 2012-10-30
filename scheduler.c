@@ -46,7 +46,7 @@ int Ready(TCB* thread)
 
 TCB* Schedule()
 {
-	Print_TCB_queue(ready_threads);
+	//Print_TCB_queue(ready_threads);
 	
 	TCB* scheduled = Dequeue(ready_threads);
 
@@ -92,9 +92,9 @@ void Kill(TCB* thread)
 {
 	Unblock_waiting_for_me(thread);
 
-	//Print_TCB_list(all_threads);
+	Print_TCB_list(all_threads);
 	TCB_list_remove(all_threads, thread);
-	//Print_TCB_list(all_threads);
+	Print_TCB_list(all_threads);
 
 	free(thread->waiting_for_me);
 	free(thread); // Frees pointer to thread that exited
