@@ -67,7 +67,7 @@ int TCB_list_add(TCB_list* tcb_list, TCB* tcb)
 	}
 }
 
-TCB* TCB_list_remove(TCB_list* tcb_list, TCB* tcb)
+/*TCB* TCB_list_remove(TCB_list* tcb_list, TCB* tcb)
 {
 	TCB_list_node* pointer = tcb_list->front;
 
@@ -115,6 +115,50 @@ TCB* TCB_list_remove(TCB_list* tcb_list, TCB* tcb)
 		{
 			pointer = pointer->next;
 		}
+	}
+
+	return NULL;
+}*/
+
+TCB* TCB_list_remove(TCB_list* tcb_list, TCB* tcb)
+{
+	TCB_list_node* pointer = tcb_list->front;
+
+	while(pointer != NULL)
+	{
+		if(TCB_equals(pointer->data, tcb))
+		{
+			TCB_list_node* to_be_removed = pointer;
+
+			if((tcb_list->front)->next == NULL) // list has only one element
+			{
+				tcb_list->front = NULL;
+				tcb_list->rear = NULL;
+			}
+			else if(pointer->previous == NULL) // list has more than one element and first element is to be removed
+			{
+				tcb_list->front = (tcb_list->front)->next;
+				(tcb_list->front)->previous = NULL;
+			}
+			else if(pointer->next == NULL) // list has more than one element and last element is to be removed
+			{
+				(pointer->previous)->next = pointer->next;
+				tcb_list->rear = pointer->previous;
+			}
+			else // default
+			{
+				(pointer->previous)->next = pointer->next;
+			}
+
+			TCB* data = (TCB*)malloc(sizeof(TCB));
+			*data = *(to_be_removed->data);
+
+			free(to_be_removed);
+
+			return data;
+		}		
+		
+		pointer = pointer->next;
 	}
 
 	return NULL;
