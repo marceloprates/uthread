@@ -1,10 +1,5 @@
 #pragma once
 
-#include <ucontext.h>
-#include <stdlib.h>
-#include <stdio.h>
-#include <string.h>
-
 #include "TCB.h"
 
 typedef struct TCB_struct TCB;
