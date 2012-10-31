@@ -1,6 +1,8 @@
 #define MAKECONTEXT
 
 #include <sys/mman.h>
+#include <stdlib.h>
+#include <stdio.h>
 #include "contexts.h"
 #define STACKSIZE 10485760
 
