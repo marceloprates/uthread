@@ -1,3 +1,5 @@
+#include <stdlib.h>
+#include <stdio.h>
 #include "scheduler.h"
 
 TCB_list* all_threads;
