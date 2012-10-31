@@ -36,6 +36,12 @@ int Is_error(int code)
 	return code < 0;
 }
 
+void Is_main()
+{
+	TCB* current_thread = Running();
+	return current_thread->tid == 0;
+}
+
 //
 
 int uthread_init()
@@ -137,8 +143,11 @@ int uthread_join(int waited_thread_tid)
 
 void uthread_exit()
 {
-	while(!No_threads_beside_main())
+	if(Is_main())
 	{
-		uthread_yield();
+		while(!No_threads_beside_main())
+		{
+			uthread_yield();
+		}
 	}
 }
