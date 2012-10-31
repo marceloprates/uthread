@@ -2,7 +2,7 @@
 
 ucontext_t* on_thread_exit;
 
-int Dispatch_next_thread()
+static int Dispatch_next_thread()
 {
 	TCB* thread = Schedule();
 
@@ -18,25 +18,25 @@ int Dispatch_next_thread()
 	}
 }
 
-void Change_current_thread()
+static void Change_current_thread()
 {
 	Ready(Running()); // Running thread is 'stopped', i.e., put in the ready queue.
 	Dispatch_next_thread();
 }
 
-void Exit_thread()
+static void Exit_thread()
 {
 	TCB* thread = Running();
 	Kill(thread);
 	Dispatch_next_thread();
 }
 
-int Is_error(int code)
+static int Is_error(int code)
 {
 	return code < 0;
 }
 
-int Is_main()
+static int Is_main()
 {
 	TCB* current_thread = Running();
 	return current_thread->tid == 0;

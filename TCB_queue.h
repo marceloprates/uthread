@@ -1,8 +1,3 @@
-#include <ucontext.h>
-#include <stdlib.h>
-#include <stdio.h>
-#include <string.h>
-
 #include "TCB.h"
 
 #define NO_ERROR 0
