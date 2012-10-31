@@ -1,6 +1,4 @@
-#include <sys/mman.h>
 #include "dispatcher.h"
-#define STACKSIZE 10485760
 
 void Dispatch(TCB* thread)
 {
