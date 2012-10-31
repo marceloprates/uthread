@@ -1,3 +1,4 @@
+#include <ucontext.h>
 #include "TCB_queue.h"
 
 int	Init_scheduler();
