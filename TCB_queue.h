@@ -1,8 +1,3 @@
-#include <ucontext.h>
-#include <stdlib.h>
-#include <stdio.h>
-#include <string.h>
-
 #include "TCB.h"
 
 struct TCB_queue_node_struct
