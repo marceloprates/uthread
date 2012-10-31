@@ -2,6 +2,7 @@
 #ifndef TCB_H
 #define TCB_H
 
+#include <ucontext.h>
 #include "TCB_list.h"
 
 #define NO_ERROR 0
