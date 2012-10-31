@@ -2,11 +2,6 @@
 #ifndef TCB_H
 #define TCB_H
 
-#include <ucontext.h>
-#include <stdlib.h>
-#include <stdio.h>
-#include <string.h>
-
 #include "TCB_list.h"
 
 typedef struct TCB_list_struct TCB_list; // forward declaration
