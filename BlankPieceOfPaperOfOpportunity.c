@@ -1,0 +1,2 @@
+- uthread_exit
+- main conta nas 128?

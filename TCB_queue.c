@@ -1,4 +1,3 @@
-#include <ucontext.h>
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
@@ -9,16 +8,15 @@ TCB_queue* TCB_queue_create()
 {
 	TCB_queue* new_queue = (TCB_queue*)malloc(sizeof(TCB_queue));
 
-	if(new_queue == NULL)
+	if(new_queue == OUT_OF_MEMORY_ERROR)
 	{
-		printf("\n * TCB_queue_create: Queue not created. No memory avaliable * \n");
-	
-		return NULL;
+		return QUEUE_CREATION_ERROR;
 	}
 	else
 	{
 		new_queue->front = NULL;
 		new_queue->rear = NULL;
+
 		return new_queue;
 	}
 }
@@ -32,11 +30,9 @@ int Enqueue(TCB_queue *q, TCB *t)
 {
 	TCB_queue_node* new_element = (TCB_queue_node*)malloc(sizeof(TCB_queue_node));
 
-	if(new_element == NULL)
+	if(new_element == OUT_OF_MEMORY_ERROR)
 	{
-		printf("\n * Enqueue: Thread nº %d not inserted. No memory avaliable * \n", t->tid);
-		
-		return -1;
+		return ENQUEUE_ERROR;
 	}
 	else
 	{
@@ -55,7 +51,7 @@ int Enqueue(TCB_queue *q, TCB *t)
 			q->rear = (q->rear)->next;
 		}
 
-		return 0;
+		return NO_ERROR;
 	}
 }
 
@@ -63,8 +59,7 @@ TCB* Dequeue(TCB_queue* tcb_queue)
 {
 	if(TCB_queue_is_empty(tcb_queue))
 	{
-		printf("\n * Dequeue: Queue already empty. Not dequeued * \n");
-		return NULL;
+		return DEQUEUE_ERROR;
 	}
 	else if((tcb_queue->front) == (tcb_queue->rear)) // queue has only one element
 	{
@@ -95,9 +90,9 @@ char* TCB_queue_to_string(TCB_queue* tcb_queue)
 	{
 		char* TCB_string = TCB_to_string(pointer->data);
 
-		if(!TCB_string)
+		if(TCB_string == TCB_TO_STRING_ERROR)
 		{
-			return NULL;
+			return TCB_QUEUE_TO_STRING_ERROR;
 		}
 		else
 		{
@@ -117,16 +112,16 @@ int Print_TCB_queue(TCB_queue* tcb_queue)
 {
 	char* tcb_queue_string = TCB_queue_to_string(tcb_queue);
 
-	if(tcb_queue_string == NULL)
+	if(tcb_queue_string == TCB_QUEUE_TO_STRING_ERROR)
 	{
 		printf("\n * Print_TCB_queue: Not able to convert queue to string. Queue not printed *\n");	
 		
-		return -1;
+		return PRINT_TCB_QUEUE_ERROR;
 	}
 	else
 	{
 		printf("%s",tcb_queue_string);
 		
-		return 0;
+		return NO_ERROR;
 	}
 }

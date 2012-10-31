@@ -13,11 +13,11 @@ static int Dispatch_next_thread()
 	{
 		Dispatch(thread);
 
-		return -1; // If execution reached this point, an error ocurred
+		return DISPATCH_ERROR; // If execution reached this point, an error ocurred
 	}
 	else
 	{
-		return 0; // Ready queue emptied. All threads are now finished.
+		return NO_ERROR; // Ready queue emptied. All threads are now finished.
 	}
 }
 
@@ -128,7 +128,9 @@ int uthread_join(int waited_thread_tid)
 	TCB* waited_thread = Find_TCB(waited_thread_tid);
 
 	if(waited_thread == NULL) // Thread with 'waited_thread_tid' tid not found. Return -1.
-		return -1;
+	{
+		return TCB_NOT_FOUND_ERROR;
+	}
 	
 	Block(this_thread, waited_thread); // Blocks this thread's TCB
 
@@ -140,7 +142,7 @@ int uthread_join(int waited_thread_tid)
 	}
 	else // If thread isn't blocked, we're returning to this point via context switching: we don't stop the thread, just return.
 	{
-		return 0;
+		return NO_ERROR;
 	}
 }
 

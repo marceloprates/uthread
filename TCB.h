@@ -3,11 +3,12 @@
 #define TCB_H
 
 #include <ucontext.h>
-#include <stdlib.h>
-#include <stdio.h>
-#include <string.h>
-
 #include "TCB_list.h"
+
+#define NO_ERROR 0
+#define OUT_OF_MEMORY_ERROR NULL
+#define TCB_TO_STRING_ERROR NULL
+#define TCB_IS_NULL_ERROR -1
 
 typedef struct TCB_list_struct TCB_list; // forward declaration
 

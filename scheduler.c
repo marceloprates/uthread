@@ -1,3 +1,5 @@
+#include <stdlib.h>
+#include <stdio.h>
 #include "scheduler.h"
 
 TCB_list* all_threads;
@@ -8,35 +10,54 @@ int tid;
 int Init_scheduler()
 {
 	ready_threads = TCB_queue_create();
-	all_threads = TCB_list_create();
+	
 
-	if(ready_threads == NULL) return -1;
+	if(ready_threads == QUEUE_CREATION_ERROR)
+	{
+		return INIT_SCHEDULER_ERROR;
+	}
+	else
+	{
+		all_threads = TCB_list_create();
 
-	tid = 0;
+		if(all_threads == LIST_CREATION_ERROR)
+		{
+			return INIT_SCHEDULER_ERROR;
+		}
 
-	return 0;
+		tid = 0;
+
+		return NO_ERROR;
+	}
+
+	
 }
 
 int Create(ucontext_t* starting_context)
 {
-	TCB* thread = TCB_create(tid++, starting_context, ready);
+	if(tid + 1 > MAX_THREADS) // Maximum number of threads reached. We don't create the thread.
+	{
+		return MAX_THREADS_ERROR;
+	}
+	else
+	{
+		TCB* thread = TCB_create(tid++, starting_context, ready);
 
-	TCB_list_add(all_threads, thread);
+		TCB_list_add(all_threads, thread);
 
-	return Ready(thread);
+		return Ready(thread);
+	}
 }
 
 int Ready(TCB* thread)
 {
-	int error;
-
 	thread->state = ready;
 
-	error = Enqueue(ready_threads, thread);
+	int could_enqueue = Enqueue(ready_threads, thread);
 
-	if(error)
+	if(could_enqueue == ENQUEUE_ERROR)
 	{
-		return error;
+		return ENQUEUE_ERROR;
 	}
 	else
 	{
@@ -46,17 +67,19 @@ int Ready(TCB* thread)
 
 TCB* Schedule()
 {
-	//Print_TCB_queue(ready_threads);
-	
 	TCB* scheduled = Dequeue(ready_threads);
 
-	if(scheduled != NULL)
+	if(scheduled == DEQUEUE_ERROR)
+	{
+		return DEQUEUE_ERROR;
+	}
+	else
 	{
 		running_thread = scheduled;
 		scheduled->state = running;
-	}
 
-	return scheduled;
+		return scheduled;
+	}
 }
 
 TCB* Running()
@@ -92,9 +115,7 @@ void Kill(TCB* thread)
 {
 	Unblock_waiting_for_me(thread);
 
-	Print_TCB_list(all_threads);
 	TCB_list_remove(all_threads, thread);
-	Print_TCB_list(all_threads);
 
 	free(thread->waiting_for_me);
 	free(thread); // Frees pointer to thread that exited

@@ -4,6 +4,8 @@
 #define GET_CONTEXT_ERROR -1
 #define CREATE_THREAD_ERROR -1
 #define SCHEDULING_ERROR -1
+#define DISPATCH_ERROR -1
+#define TCB_NOT_FOUND_ERROR -1;
 
 int uthread_init();
 

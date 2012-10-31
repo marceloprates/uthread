@@ -1,6 +1,6 @@
-#define MAKECONTEXT
-
 #include <sys/mman.h>
+#include <stdlib.h>
+#include <stdio.h>
 #include "contexts.h"
 #define STACKSIZE 10485760
 
@@ -10,8 +10,6 @@ ucontext_t* Make_context_noargs(void (*start_routine) (void), ucontext_t* uclink
 
 	if(cp == NULL)
 	{
-		printf("\n * Make_context_noargs: Context not created. No memory avaliable * \n");
-
 		return NULL;
 	}
 	else
@@ -27,15 +25,12 @@ ucontext_t* Make_context_noargs(void (*start_routine) (void), ucontext_t* uclink
 	}
 }
 
-#ifdef MAKECONTEXT 
 ucontext_t* Make_context(void (*start_routine) (void*), void* arg, ucontext_t* uclink)
 {
 	ucontext_t* cp = (ucontext_t*)malloc(sizeof(ucontext_t));
 
 	if(cp == NULL)
 	{
-		printf("\n * Make_context: Context not created. No memory avaliable * \n");
-
 		return NULL;
 	}
 	else
@@ -50,34 +45,3 @@ ucontext_t* Make_context(void (*start_routine) (void*), void* arg, ucontext_t* u
 		return cp;
 	}
 }
-
-#else /*ifndef MAKECONTEXT*/
-
-ucontext_t* Make_context(void (*start_routine) (void*), void* arg, ucontext_t* uclink)
-{
-	ucontext_t* cp = (ucontext_t*)malloc(sizeof(ucontext_t));
-
-	if(cp == NULL)
-	{
-		printf("\n * Make_context: Context not created. No memory avaliable * \n");
-
-		return NULL;
-	}
-	else
-	{
-		bool contextsaved = 0;
-		bool contextentered = 0;
-	
-		getcontext(cp);
-
-		if(!gotcontext)
-		{
-			gotcontext = 1;
-			start_routine(arg);
-		}
-
-		return cp;
-	}
-}
-
-#endif /*MAKECONTEXT*/
