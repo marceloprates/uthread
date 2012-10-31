@@ -1,4 +1,3 @@
-#include <ucontext.h>
 #include "TCB_queue.h"
 
 #define MAX_THREADS 128
