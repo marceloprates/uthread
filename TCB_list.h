@@ -7,6 +7,17 @@
 
 #include "TCB.h"
 
+#define NO_ERROR 0
+#define OUT_OF_MEMORY_ERROR NULL
+#define LIST_CREATION_ERROR NULL
+#define LIST_ADD_ERROR -1
+#define LIST_REMOVE_ERROR NULL
+#define LIST_CONTAINS_ERROR -1
+#define LIST_GET_ERROR NULL
+#define TCB_LIST_TO_STRING_ERROR NULL
+#define PRINT_TCB_LIST_ERROR -1
+
+
 typedef struct TCB_struct TCB;
 
 struct TCB_list_node_struct

@@ -11,9 +11,7 @@ TCB* TCB_create(int tid, ucontext_t* context, State state)
 
 	if(t == NULL)
 	{
-		printf("\n* Create_TCB: TCB not created. No memory avaliable *\n");
-
-		return NULL;
+		return OUT_OF_MEMORY_ERROR;
 	}
 	else
 	{
@@ -35,15 +33,11 @@ int TCB_block(TCB* waiting_thread, TCB* blocking_thread)
 {
 	if(blocking_thread == NULL)
 	{
-		printf(" * Block_TCB: 'Waiting for me' queue not updated. Blocking TCB was empty * \n");
-
-		return 0;
+		return TCB_IS_NULL_ERROR;
 	}
 	else if(waiting_thread == NULL)
 	{
-		printf(" * Block_TCB: 'Waiting for me' queue not updated. Waiting TCB was empty * \n");
-
-		return 0;
+		return TCB_IS_NULL_ERROR;
 	}
 	else
 	{
@@ -51,7 +45,7 @@ int TCB_block(TCB* waiting_thread, TCB* blocking_thread)
 
 		waiting_thread->state = blocked;
 
-		return 1;
+		return NO_ERROR;
 	}
 }
 
@@ -59,15 +53,11 @@ int TCB_unblock(TCB* waiting_thread, TCB* blocking_thread)
 {
 	if(blocking_thread == NULL)
 	{
-		printf(" * Unblock_TCB: 'Waiting for me' queue not updated. Blocking TCB was empty * \n");
-
-		return 0;
+		return TCB_IS_NULL_ERROR;
 	}
 	else if(waiting_thread == NULL)
 	{
-		printf(" * Unblock_TCB: 'Waiting for me' queue not updated. Waiting TCB was empty * \n");
-
-		return 0;
+		return TCB_IS_NULL_ERROR;
 	}
 	else
 	{
@@ -75,7 +65,7 @@ int TCB_unblock(TCB* waiting_thread, TCB* blocking_thread)
 
 		waiting_thread->state = ready;
 
-		return 1;
+		return NO_ERROR;
 	}
 }
 
@@ -108,9 +98,7 @@ char* TCB_to_string(TCB* tcb)
 {
 	if(tcb == NULL)
 	{
-		printf("\n * TCB_to_string: TCB was empty. Conversion to string failed * \n");
-
-		return NULL;
+		return TCB_TO_STRING_ERROR;
 	}
 	else
 	{

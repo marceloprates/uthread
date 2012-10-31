@@ -9,11 +9,9 @@ TCB_list* TCB_list_create()
 {
 	TCB_list* new_list = (TCB_list*)malloc(sizeof(TCB_list));
 
-	if(new_list == NULL)
+	if(new_list == OUT_OF_MEMORY_ERROR)
 	{
-		printf("\n * TCB_list_create: List not created. No memory avaliable * \n");
-	
-		return NULL;
+		return LIST_CREATION_ERROR;
 	}
 	else
 	{
@@ -33,11 +31,9 @@ int TCB_list_add(TCB_list* tcb_list, TCB* tcb)
 {
 	TCB_list_node* new_node = (TCB_list_node*)malloc(sizeof(TCB_list_node));
 
-	if(new_node == NULL)
+	if(new_node == OUT_OF_MEMORY_ERROR)
 	{
-		printf("\n * TCB_list_add: Thread %d not added. No memory avaliable * \n", tcb->tid);
-
-		return 0;
+		return LIST_ADD_ERROR;
 	}
 	else if(tcb_list->rear == NULL) // list is empty
 	{
@@ -51,7 +47,7 @@ int TCB_list_add(TCB_list* tcb_list, TCB* tcb)
 		tcb_list->front->next = NULL;
 		tcb_list->front->previous = NULL;
 
-		return 1;
+		return NO_ERROR;
 	}
 	else if((tcb_list->front)->next == NULL) // list has only one element
 	{
@@ -64,7 +60,7 @@ int TCB_list_add(TCB_list* tcb_list, TCB* tcb)
 
 		tcb_list->rear = (tcb_list->rear)->next;
 
-		return 1;
+		return NO_ERROR;
 	}
 	else
 	{
@@ -76,7 +72,7 @@ int TCB_list_add(TCB_list* tcb_list, TCB* tcb)
 
 		tcb_list->rear = (tcb_list->rear)->next;
 
-		return 1;
+		return NO_ERROR;
 	}
 }
 
@@ -121,7 +117,7 @@ TCB* TCB_list_remove(TCB_list* tcb_list, TCB* tcb)
 		pointer = pointer->next;
 	}
 
-	return NULL;
+	return LIST_REMOVE_ERROR;
 }
 
 int TCB_list_contains(TCB_list* tcb_list, TCB* tcb)
@@ -132,13 +128,13 @@ int TCB_list_contains(TCB_list* tcb_list, TCB* tcb)
 	{
 		if(TCB_equals(pointer->data, tcb))
 		{
-			return 1;
+			return NO_ERROR;
 		}
 
 		pointer = pointer->next;
 	}
 
-	return 0;
+	return LIST_CONTAINS_ERROR;
 }
 
 TCB* TCB_list_get(TCB_list* tcb_list, int tid)
@@ -155,7 +151,7 @@ TCB* TCB_list_get(TCB_list* tcb_list, int tid)
 		pointer = pointer->next;
 	}
 
-	return NULL;
+	return LIST_GET_ERROR;
 }
 
 char* TCB_list_enumerate_tids(TCB_list* tcb_list)
@@ -199,9 +195,9 @@ char* TCB_list_to_string(TCB_list* tcb_list)
 	{
 		char* TCB_string = TCB_to_string(pointer->data);
 
-		if(!TCB_string)
+		if(TCB_string == TCB_TO_STRING_ERROR)
 		{
-			return NULL;
+			return TCB_LIST_TO_STRING_ERROR;
 		}
 		else
 		{	
@@ -221,17 +217,15 @@ int Print_TCB_list(TCB_list* tcb_list)
 {
 	char* tcb_list_string = TCB_list_to_string(tcb_list);
 
-	if(tcb_list_string == NULL)
+	if(tcb_list_string == TCB_LIST_TO_STRING_ERROR)
 	{
-		printf("\n * Print_TCB_list: Not able to convert list to string. List not printed *\n");	
-		
-		return 0;
+		return PRINT_TCB_LIST_ERROR;
 	}
 	else
 	{
 		printf("%s",tcb_list_string);
 		
-		return 1;
+		return NO_ERROR;
 	}
 }
 
