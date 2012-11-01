@@ -17,5 +17,7 @@ int uthread_join(int waited_thread_tid);
 
 void uthread_exit();
 
+void uthread_wait();
+
 
 
