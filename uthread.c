@@ -15,7 +15,7 @@ static int Dispatch_next_thread()
 	{
 		Dispatch(thread);
 
-		return DISPATCH_ERROR; // If execution reached this point, an error ocurred
+		return ERROR; // If execution reached this point, an error ocurred
 	}
 	else
 	{
@@ -56,15 +56,15 @@ int uthread_init()
 	int code;
 	int gotcontext = 0;
 
-	if(main_context == NULL) return OUT_OF_MEMORY_ERROR;
+	if(main_context == NULL) return ERROR;
 
 	code = Init_scheduler();
 
-	if(Is_error(code)) return OUT_OF_MEMORY_ERROR;
+	if(Is_error(code)) return ERROR;
 
 	on_thread_exit = Make_context_noargs(Exit_thread, NULL); // Context to be entered when a thread exits
 
-	if(on_thread_exit == NULL) return MAKE_CONTEXT_ERROR;
+	if(on_thread_exit == NULL) return ERROR;
 
 	result = getcontext(main_context);
 
@@ -72,16 +72,16 @@ int uthread_init()
 	{
 		gotcontext = 1;
 
-		if(result == -1) return GET_CONTEXT_ERROR;
+		if(result == -1) return ERROR;
 
 		main_tid = Create(main_context); // Creates main thread
 
-		if(Is_error(main_tid)) return CREATE_THREAD_ERROR;
+		if(Is_error(main_tid)) return ERROR;
 
 		// Sets main thread to run; this is necessary for consistency
 		code = Dispatch_next_thread();
 
-		if(Is_error(code)) return SCHEDULING_ERROR;
+		if(Is_error(code)) return ERROR;
 	}
 
 	return NO_ERROR; // If this point was reached, no error ocurred
@@ -94,11 +94,11 @@ int uthread_create(void * (*start_routine)(void*), void * arg)
 
 	thread_context = Make_context(start_routine, arg, on_thread_exit); // Creates thread context that runs start_routine
 
-	if(thread_context == NULL) return MAKE_CONTEXT_ERROR;
+	if(thread_context == NULL) return ERROR;
 
 	code = Create(thread_context); // Creates thread and inserts it on queue
 
-	if(Is_error(code)) return CREATE_THREAD_ERROR;
+	if(Is_error(code)) return ERROR;
 
 	return code; // Contains thread id
 }
@@ -128,7 +128,7 @@ int uthread_join(int waited_thread_tid)
 
 	if(waited_thread == NULL) // Thread with 'waited_thread_tid' tid not found. Return -1.
 	{
-		return TCB_NOT_FOUND_ERROR;
+		return ERROR;
 	}
 	
 	Block(this_thread, waited_thread); // Blocks this thread's TCB

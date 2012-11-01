@@ -10,7 +10,7 @@ TCB* TCB_create(int tid, ucontext_t* context, State state)
 
 	if(t == NULL)
 	{
-		return OUT_OF_MEMORY_ERROR;
+		return NULL;
 	}
 	else
 	{
@@ -32,11 +32,11 @@ int TCB_block(TCB* waiting_thread, TCB* blocking_thread)
 {
 	if(blocking_thread == NULL)
 	{
-		return TCB_IS_NULL_ERROR;
+		return ERROR;
 	}
 	else if(waiting_thread == NULL)
 	{
-		return TCB_IS_NULL_ERROR;
+		return ERROR;
 	}
 	else
 	{
@@ -52,11 +52,11 @@ int TCB_unblock(TCB* waiting_thread, TCB* blocking_thread)
 {
 	if(blocking_thread == NULL)
 	{
-		return TCB_IS_NULL_ERROR;
+		return ERROR;
 	}
 	else if(waiting_thread == NULL)
 	{
-		return TCB_IS_NULL_ERROR;
+		return ERROR;
 	}
 	else
 	{
@@ -97,7 +97,7 @@ char* TCB_to_string(TCB* tcb)
 {
 	if(tcb == NULL)
 	{
-		return TCB_TO_STRING_ERROR;
+		return NULL;
 	}
 	else
 	{

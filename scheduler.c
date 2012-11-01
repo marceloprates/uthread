@@ -13,7 +13,7 @@ int Init_scheduler()
 	ready_threads = TCB_queue_create();
 	all_threads = TCB_list_create();
 	
-	if(ready_threads == QUEUE_CREATION_ERROR || all_threads == LIST_CREATION_ERROR)
+	if(ready_threads == NULL || all_threads == NULL)
 	{
 		return ERROR;
 	}
@@ -39,14 +39,14 @@ int Create(ucontext_t* starting_context)
 
 	TCB* thread = TCB_create(tid_counter, starting_context, READY);
 
-	if(thread == OUT_OF_MEMORY_ERROR)
+	if(thread == NULL)
 	{
 		return ERROR;
 	}
 
 	int result = TCB_list_add(all_threads, thread);
 
-	if(result == LIST_ADD_ERROR)
+	if(result == ERROR)
 	{
 		return ERROR;
 	}
@@ -58,7 +58,7 @@ int Ready(TCB* thread)
 {
 	int could_enqueue = Enqueue(ready_threads, thread);
 
-	if(could_enqueue == ENQUEUE_ERROR)
+	if(could_enqueue == ERROR)
 	{
 		return ERROR;
 	}
@@ -74,7 +74,7 @@ TCB* Schedule()
 {
 	TCB* scheduled = Dequeue(ready_threads);
 
-	if(scheduled == DEQUEUE_ERROR)
+	if(scheduled == NULL)
 	{
 		return NULL;
 	}

@@ -8,9 +8,9 @@ TCB_queue* TCB_queue_create()
 {
 	TCB_queue* new_queue = (TCB_queue*)malloc(sizeof(TCB_queue));
 
-	if(new_queue == OUT_OF_MEMORY_ERROR)
+	if(new_queue == NULL)
 	{
-		return QUEUE_CREATION_ERROR;
+		return NULL;
 	}
 	else
 	{
@@ -30,9 +30,9 @@ int Enqueue(TCB_queue *q, TCB *t)
 {
 	TCB_queue_node* new_element = (TCB_queue_node*)malloc(sizeof(TCB_queue_node));
 
-	if(new_element == OUT_OF_MEMORY_ERROR)
+	if(new_element == NULL)
 	{
-		return ENQUEUE_ERROR;
+		return ERROR;
 	}
 	else
 	{
@@ -59,7 +59,7 @@ TCB* Dequeue(TCB_queue* tcb_queue)
 {
 	if(TCB_queue_is_empty(tcb_queue))
 	{
-		return DEQUEUE_ERROR;
+		return NULL;
 	}
 	else if((tcb_queue->front) == (tcb_queue->rear)) // queue has only one element
 	{
@@ -90,9 +90,9 @@ char* TCB_queue_to_string(TCB_queue* tcb_queue)
 	{
 		char* TCB_string = TCB_to_string(pointer->data);
 
-		if(TCB_string == TCB_TO_STRING_ERROR)
+		if(TCB_string == NULL)
 		{
-			return TCB_QUEUE_TO_STRING_ERROR;
+			return NULL;
 		}
 		else
 		{
@@ -112,11 +112,11 @@ int Print_TCB_queue(TCB_queue* tcb_queue)
 {
 	char* tcb_queue_string = TCB_queue_to_string(tcb_queue);
 
-	if(tcb_queue_string == TCB_QUEUE_TO_STRING_ERROR)
+	if(tcb_queue_string == NULL)
 	{
 		printf("\n * Print_TCB_queue: Not able to convert queue to string. Queue not printed *\n");	
 		
-		return PRINT_TCB_QUEUE_ERROR;
+		return ERROR;
 	}
 	else
 	{
