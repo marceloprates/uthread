@@ -8,9 +8,9 @@ TCB_list* TCB_list_create()
 {
 	TCB_list* new_list = (TCB_list*)malloc(sizeof(TCB_list));
 
-	if(new_list == OUT_OF_MEMORY_ERROR)
+	if(new_list == NULL)
 	{
-		return LIST_CREATION_ERROR;
+		return NULL;
 	}
 	else
 	{
@@ -30,9 +30,9 @@ int TCB_list_add(TCB_list* tcb_list, TCB* tcb)
 {
 	TCB_list_node* new_node = (TCB_list_node*)malloc(sizeof(TCB_list_node));
 
-	if(new_node == OUT_OF_MEMORY_ERROR)
+	if(new_node == NULL)
 	{
-		return LIST_ADD_ERROR;
+		return ERROR;
 	}
 	else if(tcb_list->rear == NULL) // list is empty
 	{
@@ -116,7 +116,7 @@ TCB* TCB_list_remove(TCB_list* tcb_list, TCB* tcb)
 		pointer = pointer->next;
 	}
 
-	return LIST_REMOVE_ERROR;
+	return NULL;
 }
 
 int TCB_list_contains(TCB_list* tcb_list, TCB* tcb)
@@ -133,7 +133,7 @@ int TCB_list_contains(TCB_list* tcb_list, TCB* tcb)
 		pointer = pointer->next;
 	}
 
-	return LIST_CONTAINS_ERROR;
+	return ERROR;
 }
 
 TCB* TCB_list_get(TCB_list* tcb_list, int tid)
@@ -150,7 +150,7 @@ TCB* TCB_list_get(TCB_list* tcb_list, int tid)
 		pointer = pointer->next;
 	}
 
-	return LIST_GET_ERROR;
+	return NULL;
 }
 
 char* TCB_list_enumerate_tids(TCB_list* tcb_list)
@@ -194,9 +194,9 @@ char* TCB_list_to_string(TCB_list* tcb_list)
 	{
 		char* TCB_string = TCB_to_string(pointer->data);
 
-		if(TCB_string == TCB_TO_STRING_ERROR)
+		if(TCB_string == NULL)
 		{
-			return TCB_LIST_TO_STRING_ERROR;
+			return NULL;
 		}
 		else
 		{	
@@ -216,9 +216,9 @@ int Print_TCB_list(TCB_list* tcb_list)
 {
 	char* tcb_list_string = TCB_list_to_string(tcb_list);
 
-	if(tcb_list_string == TCB_LIST_TO_STRING_ERROR)
+	if(tcb_list_string == NULL)
 	{
-		return PRINT_TCB_LIST_ERROR;
+		return ERROR;
 	}
 	else
 	{
