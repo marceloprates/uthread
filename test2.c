@@ -7,7 +7,6 @@ void* f1(int* x)
 	int i = *x;
 	uthread_yield();
 	printf("f1: %d\n", i);
-	uthread_exit();
 
 	return NULL;
 }
@@ -21,9 +20,17 @@ void* f2(int* x)
 	return NULL;
 }
 
-int main()
+int main(int argc, char* argv[])
 {
-	int i1 = 1, i2 = 2;
+	if(argc < 3)
+	{
+		printf("Please provide two integers as arguments.\n");
+		return 0;
+	}
+
+	int i1 = atoi(argv[1]);
+	int i2 = atoi(argv[2]);
+	
 	int id1,id2;
   	
 	uthread_init();
