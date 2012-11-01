@@ -1,3 +1,4 @@
+#include <stdlib.h>
 #include "scheduler.h"
 #include "dispatcher.h"
 #include "contexts.h"

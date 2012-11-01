@@ -35,7 +35,7 @@ int Init_scheduler()
 
 int Create(ucontext_t* starting_context)
 {
-	if(tid + 1 > MAX_THREADS) // Maximum number of threads reached. We don't create the thread.
+	if(tid > MAX_THREADS) // Maximum number of threads reached. We don't create the thread.
 	{
 		return MAX_THREADS_ERROR;
 	}

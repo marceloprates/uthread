@@ -1,3 +1,4 @@
+#include <stdlib.h>
 #include "uthread.h"
 
 int b;  /* buffer size = 1; */
