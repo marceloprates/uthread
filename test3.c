@@ -57,6 +57,13 @@ int main(int argc, char* argv[])
 	}
 
 	int n = argv[1];
+
+        if(n < 0)
+        {
+		printf("Negative argument. Please enter a positive integer as argument.\n");
+		return 0;
+	}
+
 	int consumer_tid;
 
 	uthread_init();
