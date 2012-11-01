@@ -42,7 +42,7 @@ int TCB_block(TCB* waiting_thread, TCB* blocking_thread)
 	{
 		TCB_list_add(blocking_thread->waiting_for_me, waiting_thread);
 
-		waiting_thread->state = blocked;
+		waiting_thread->state = BLOCKED;
 
 		return NO_ERROR;
 	}
@@ -62,7 +62,7 @@ int TCB_unblock(TCB* waiting_thread, TCB* blocking_thread)
 	{
 		TCB_list_remove(blocking_thread->waiting_for_me, waiting_thread);
 
-		waiting_thread->state = ready;
+		waiting_thread->state = READY;
 
 		return NO_ERROR;
 	}
@@ -70,7 +70,7 @@ int TCB_unblock(TCB* waiting_thread, TCB* blocking_thread)
 
 int TCB_is_blocked(TCB* thread)
 {
-	return thread->state == blocked;
+	return thread->state == BLOCKED;
 }
 
 char* State_to_string(State state)
@@ -79,13 +79,13 @@ char* State_to_string(State state)
 
 	switch(state)
 	{
-		case ready:
+		case READY:
 			state_string = "ready";
 			break;
-		case running:
+		case RUNNING:
 			state_string = "running";
 			break;
-		case blocked:
+		case BLOCKED:
 			state_string = "blocked";
 			break;
 	}
