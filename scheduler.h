@@ -1,6 +1,6 @@
 #include "TCB_queue.h"
 
-#define MAX_THREADS 128
+#define MAX_THREADS 129 // 128 threads besides main
 
 #define NO_ERROR 0
 #define ERROR -1

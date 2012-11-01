@@ -28,14 +28,10 @@ int Init_scheduler()
 
 int Create(ucontext_t* starting_context)
 {
-
-	if(tid_counter + 1 > MAX_THREADS) // Maximum number of threads reached. We don't create the thread.
+	if(thread_counter + 1 > MAX_THREADS) // Maximum number of threads reached. We don't create the thread.
 	{
 		return ERROR;
 	}
-
-	tid_counter++;
-	thread_counter++;
 
 	TCB* thread = TCB_create(tid_counter, starting_context, READY);
 
@@ -43,6 +39,9 @@ int Create(ucontext_t* starting_context)
 	{
 		return ERROR;
 	}
+
+	tid_counter++;
+	thread_counter++;
 
 	int result = TCB_list_add(all_threads, thread);
 
