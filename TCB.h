@@ -14,9 +14,9 @@ typedef struct TCB_list_struct TCB_list; // forward declaration
 
 typedef enum
 {
-	ready,
-	running,
-	blocked
+	READY,
+	RUNNING,
+	BLOCKED
 } State;
 
 struct TCB_struct
