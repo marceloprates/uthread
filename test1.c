@@ -10,7 +10,7 @@ void proc3(void* n);
 
 void proc1(void* n)
 {
-	int i = ((int*)n)[0];
+	int i = *(int*)n;
 
 	printf("--Hello from proc1--\n");
 
@@ -27,15 +27,15 @@ void proc1(void* n)
 
 void proc2(void* n)
 {	
-	int i = ((int*)n)[0];
+	int i = *(int*)n;
 
 	printf("--Hello from proc2--\n");
 
-	int m[1];
+	int m;
 
-	m[0] = 42;
+	m = 42;
 
-	int id3 = uthread_create(proc3, m);
+	int id3 = uthread_create(proc3, &m);
 
 	printf("--Created thread 3--\n");
 
@@ -48,7 +48,7 @@ void proc2(void* n)
 
 void proc3(void* n)
 {
-	int i = ((int*)n)[0];
+	int i = *(int*)n;
 
 	printf("--Hello from proc3--\n");
 
@@ -63,23 +63,23 @@ void proc3(void* n)
 
 int main()
 {
-	int n[1];
+	int n;
 	int id1;
 	int id2;
 
-	n[0] = 20;
+	n = 20;
 
 	uthread_init();
-	id1 = uthread_create(proc1, n);
+	id1 = uthread_create(proc1, &n);
 	printf("--Created thread 1--\n");
-	id2 = uthread_create(proc2, n);
+	id2 = uthread_create(proc2, &n);
 	printf("--Created thread 2--\n");
 	uthread_join(id1);
 	uthread_join(id2);
 
-	uthread_exit();
-
 	printf("--End of main--\n");
+
+	uthread_wait();
 
 	return 0;
 }
