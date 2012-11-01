@@ -36,12 +36,14 @@ void* consumer(void* n)
 
 	printf("I'm a consumer\n");
 
-	for (i=0;i<100;i++)
+	for (i=0;i<max;i++)
 	{
    		v = get_buffer();
    		printf("got %d  ",v);
 		uthread_yield();
 	}
+
+	printf("\n");
 
 	return NULL;
 }
