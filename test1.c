@@ -2,8 +2,6 @@
 #include <stdlib.h>
 #include "../include/uthread.h"
 
-void* proc3(void* n);
-
 void* proc1(void* n)
 {
 	int i = *(int*)n;
@@ -14,7 +12,7 @@ void* proc1(void* n)
 	{
 		printf("i=%d\n", i);
 
-		if(i % 3 == 0)
+		if(i % 5 == 0)
 		{
 			uthread_yield();
 		}
@@ -29,52 +27,34 @@ void* proc2(void* n)
 
 	printf("--Hello from proc2--\n");
 
-	int m;
-
-	m = 42;
-
-	int id3 = uthread_create(proc3, &m);
-
-	if(id3 != -1)
-	{
-		printf("--Created thread 3--\n");
-	}
-	else
-	{
-		printf("--Creation of thread 3 failed--\n");
-	}
-
 	for(; i > 0; i--)
 	{
 		printf("j=%d\n", i);
-		uthread_yield();
+
+		if(i % 3 == 0)
+		{
+			uthread_yield();
+		}
 	}
 
 	return NULL;
 }
 
-void* proc3(void* n)
+int main(int argc, char* argv[])
 {
-	int i = *(int*)n;
-
-	printf("--Hello from proc3--\n");
-
-	for(; i > 0; i--)
-	{
-		printf("k=%d\n", i);
-		uthread_yield();
+	if(argc < 2)
+        {
+		printf("Please enter a positive integer as argument.\n");
+		return 0;
 	}
 
-	return NULL;
-}
+        int n = atoi(argv[1]);
 
-int main()
-{
-	int n;
-	int id1;
-	int id2;
-
-	n = 21;
+        if(n < 0)
+        {
+		printf("Negative argument. Please enter a positive integer as argument.\n");
+		return 0;
+	}
 
 	uthread_init();
 	id1 = uthread_create(proc1, &n);
@@ -103,8 +83,6 @@ int main()
 	uthread_join(id2);
 
 	printf("--End of main--\n");
-
-	uthread_wait();
 
 	return 0;
 }
