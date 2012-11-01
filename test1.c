@@ -1,8 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include "uthread.h"
-
-// Status atual: PASS
+#include "../include/uthread.h"
 
 void* proc3(void* n);
 
@@ -37,7 +35,14 @@ void* proc2(void* n)
 
 	int id3 = uthread_create(proc3, &m);
 
-	printf("--Created thread 3--\n");
+	if(id3 != -1)
+	{
+		printf("--Created thread 3--\n");
+	}
+	else
+	{
+		printf("--Creation of thread 3 failed--\n");
+	}
 
 	for(; i > 0; i--)
 	{
@@ -63,21 +68,37 @@ void* proc3(void* n)
 	return NULL;
 }
 
-
-
 int main()
 {
 	int n;
 	int id1;
 	int id2;
 
-	n = 20;
+	n = 21;
 
 	uthread_init();
 	id1 = uthread_create(proc1, &n);
-	printf("--Created thread 1--\n");
+
+	if(id1 != -1)
+	{
+		printf("--Created thread 1--\n");
+	}
+	else
+	{
+		printf("--Creation of thread 1 failed--\n");
+	}
+
 	id2 = uthread_create(proc2, &n);
-	printf("--Created thread 2--\n");
+
+	if(id2 != -1)
+	{
+		printf("--Created thread 2--\n");
+	}
+	else
+	{
+		printf("--Creation of thread 2 failed--\n");
+	}
+
 	uthread_join(id1);
 	uthread_join(id2);
 

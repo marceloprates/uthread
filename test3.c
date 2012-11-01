@@ -1,6 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include "uthread.h"
+#include "../include/uthread.h"
 
 int b;  /* buffer size = 1; */
 
@@ -14,7 +14,7 @@ int get_buffer()
 	return b ;
 }
 
-void *producer(void* nothing)
+void* producer(void* nothing)
 {
 	int i = 0;
 	printf("I'm a producer\n");
@@ -25,9 +25,11 @@ void *producer(void* nothing)
   		i = i + 1;
 		uthread_yield();
 	}
+	
+	return NULL;
 }
 
-void *consumer(void* nothing)
+void* consumer(void* nothing)
 {
 	int i,v;
 	printf("I'm a consumer\n");
@@ -38,20 +40,22 @@ void *consumer(void* nothing)
    		printf("got %d  ",v);
 		uthread_yield();
 	}
+
+	return NULL;
 }
  
 int main()  
 {
-	int producer_tid, consumer_tid;
+	int consumer_tid;
 
 	uthread_init();
 
-	producer_tid = uthread_create(producer, NULL);
+	uthread_create(producer, NULL);
 	consumer_tid = uthread_create(consumer, NULL);
 
 	uthread_join(consumer_tid);
 
-	//printf("End\n");
+	return 0;
 }
  
 

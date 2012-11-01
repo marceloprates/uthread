@@ -1,6 +1,6 @@
 #include <stdlib.h>
 #include <stdio.h>
-#include "uthread.h"
+#include "../include/uthread.h"
 
 struct range_s
 {
@@ -51,7 +51,7 @@ int main(int argc, char* argv[])
 	if(argc < 3)
 	{
 		printf("Unsufficient arguments. Please provide two positive integers.\n");
-		return -1;
+		return 0;
 	}
 
 	int n1 = atoi(argv[1]);
@@ -60,13 +60,13 @@ int main(int argc, char* argv[])
 	if(n1 < 0 || n2 < 0)
 	{
 		printf("Negative argument. Please provide two positive integers.\n");
-		return -1;
+		return 0;
 	}
 
 	if(n1 > n2)
 	{
 		printf("%d is larger than %d. First argument can't be larger than the second.\n", n1, n2);
-		return -1;
+		return 0;
 	}
 
 	range_t range;
