@@ -137,7 +137,7 @@ int uthread_join(int waited_thread_tid)
 
 	if(TCB_is_blocked(this_thread)) // Stop thread only if thread is blocked.
 	{
-		Dispatch_next_thread();
+		return Dispatch_next_thread();
 	}
 	else // If thread isn't blocked, we're returning to this point via context switching: we don't stop the thread, just return.
 	{
