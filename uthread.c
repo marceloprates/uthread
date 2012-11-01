@@ -147,9 +147,14 @@ int uthread_join(int waited_thread_tid)
 
 void uthread_exit()
 {
-	if(Is_main())
+	// Does nothing
+}
+
+void uthread_wait()
+{
+	if(Is_main()) // Current thread is the main thread
 	{
-		while(!No_threads_beside_main())
+		while(!No_threads_beside_main()) // Stops execution of main until all other threads have finished
 		{
 			uthread_yield();
 		}

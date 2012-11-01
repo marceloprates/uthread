@@ -4,11 +4,9 @@
 
 // Status atual: PASS
 
-void proc1(void* n);
-void proc2(void* n);
-void proc3(void* n);
+void* proc3(void* n);
 
-void proc1(void* n)
+void* proc1(void* n)
 {
 	int i = *(int*)n;
 
@@ -23,9 +21,11 @@ void proc1(void* n)
 			uthread_yield();
 		}
 	}
+
+	return NULL;
 }
 
-void proc2(void* n)
+void* proc2(void* n)
 {	
 	int i = *(int*)n;
 
@@ -44,9 +44,11 @@ void proc2(void* n)
 		printf("j=%d\n", i);
 		uthread_yield();
 	}
+
+	return NULL;
 }
 
-void proc3(void* n)
+void* proc3(void* n)
 {
 	int i = *(int*)n;
 
@@ -57,6 +59,8 @@ void proc3(void* n)
 		printf("k=%d\n", i);
 		uthread_yield();
 	}
+
+	return NULL;
 }
 
 
